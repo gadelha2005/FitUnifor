@@ -12,12 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitUnifor"
         tools:targetApi="31">
+
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.fitunifor.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,23 +28,33 @@
             android:parentActivityName=".MainActivity" />
 
         <activity
-            android:name="com.example.fitunfor.CadastroActivity"
+            android:name=".CadastroActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity"/>
+
         <activity
-            android:name="com.example.fitunfor.EsqueciSenhaActivity"
+            android:name=".EsqueciSenhaActivity"
             android:exported="false"
             android:parentActivityName="com.example.fitunfor.LoginActivity"/>
 
         <activity
-            android:name="com.example.fitunfor.RedefinirSenhaActivity"
+            android:name=".RedefinirSenhaActivity"
             android:exported="false"
-            android:parentActivityName="com.example.fitunfor.EsqueciSenhaActivity"/>
+            android:parentActivityName=".EsqueciSenhaActivity"/>
 
         <activity
             android:name=".PrincipalActivity"
             android:exported="false"
             android:parentActivityName="com.example.fitunfor.LoginActivity"/>
+
+        <activity
+            android:name=".aluno.MeusTreinosActivity"
+            android:exported="false"
+            android:parentActivityName=".PrincipalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.fitunifor.aluno.PrincipalActivity" />
+        </activity>
 
     </application>
 
