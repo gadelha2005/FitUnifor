@@ -9,7 +9,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import com.example.fitunifor.PrincipalActivity
+import com.example.fitunifor.aluno.PrincipalActivity
 import com.example.fitunifor.EsqueciSenhaActivity
 import com.google.android.material.tabs.TabLayout
 import com.example.fitunifor.R
