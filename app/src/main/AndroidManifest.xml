@@ -56,6 +56,11 @@
                 android:value="com.example.fitunifor.aluno.PrincipalActivity" />
         </activity>
 
+        <activity
+            android:name=".aluno.TreinoActivity"
+            android:exported="false"
+            android:parentActivityName=".aluno.MeusTreinosActivity"/>
+
     </application>
 
 </manifest>

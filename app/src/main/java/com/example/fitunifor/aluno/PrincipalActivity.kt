@@ -1,5 +1,6 @@
 package com.example.fitunifor.aluno
 
+import com.example.fitunifor.aluno.MeusTreinosActivity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -22,7 +23,7 @@ class PrincipalActivity : AppCompatActivity() {
 
     private fun navigateToMeusTreinos() {
         try {
-            val intent = Intent(this, MeusTreinosActivity::class.java).apply {
+            val intent = Intent(this,MeusTreinosActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
             startActivity(intent)

@@ -110,7 +110,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <Button
-                    android:id="@+id/button_iniciar_treino"
+                    android:id="@+id/button_iniciar_treino1"
                     android:layout_width="180dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
