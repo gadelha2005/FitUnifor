@@ -1,0 +1,81 @@
+<!-- res/layout/dialog_timer.xml -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="24dp"
+    android:background="@android:color/transparent"
+    card_view:cardBackgroundColor="#FDFDFD"
+    card_view:cardCornerRadius="16dp"
+    card_view:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <ImageView
+            android:id="@+id/icon_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="80dp"
+            card_view:srcCompat="@drawable/icon_close"
+            tools:srcCompat="@drawable/icon_close" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Relógio"
+            android:textColor="#050505"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_timer_value1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="01:00"
+            android:textColor="#050505"
+            android:textSize="32sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_minus1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-15" />
+
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_plus1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+15" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_set_timer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Definir" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

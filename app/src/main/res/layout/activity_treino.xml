@@ -135,7 +135,7 @@
                             android:clickable="true"
                             android:contentDescription="Play Video"
                             android:focusable="true"
-                            android:src="@drawable/icon_play" />
+                            android:src="@drawable/icon_play_video" />
                     </FrameLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -219,7 +219,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/icon_play"
+                            android:src="@drawable/icon_play_video"
                             android:contentDescription="Play Video"
                             android:clickable="true"
                             android:focusable="true" />
@@ -306,7 +306,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/icon_play"
+                            android:src="@drawable/icon_play_video"
                             android:contentDescription="Play Video"
                             android:clickable="true"
                             android:focusable="true" />
