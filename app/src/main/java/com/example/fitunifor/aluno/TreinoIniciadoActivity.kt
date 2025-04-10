@@ -1,5 +1,6 @@
 package com.example.fitunifor.aluno
 
+import ExampleDialogFragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.os.CountDownTimer
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -24,13 +26,14 @@ class TreinoIniciadoActivity : AppCompatActivity() {
     private lateinit var resetButton: ImageView
     private lateinit var editTimerIcon: ImageView
     private lateinit var vibrator: Vibrator
-    private lateinit var tempo: TimerDialogFragment
+    private lateinit var textExerciciosFeitos: TextView
 
     private var countDownTimer: CountDownTimer? = null
     private var timerRunning = false
     private var timeLeftInMillis: Long = 60000
-    private var initialTimeInMillis: Long = 60000 // Começa com 1 minuto por padrão
-
+    private var initialTimeInMillis: Long = 60000
+    private var totalExercicios = 3
+    private var exerciciosConcluidos = 0
 
     @SuppressLint("MissingInflatedId", "ServiceCast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,12 +56,33 @@ class TreinoIniciadoActivity : AppCompatActivity() {
         pauseButton = findViewById(R.id.icon_pause_timer)
         resetButton = findViewById(R.id.icon_reset_timer)
         editTimerIcon = findViewById(R.id.icon_edit_timer)
+        textExerciciosFeitos = findViewById(R.id.text_exercicios_feitos)
 
         // Estado inicial
         updateTimerDisplay()
+        updateExerciciosFeitosText()
         showStartButton()
 
-        // Clique para voltar à tela principal
+        // Configura listeners
+        setupClickListeners()
+        setupCheckBoxListeners()
+        setupVideoIconListener()
+    }
+
+    private fun setupVideoIconListener() {
+        val videoIcon = findViewById<ImageView>(R.id.icon_play_video_supino_inclinado)
+        videoIcon.setOnClickListener {
+            showVideoDialog()
+        }
+    }
+
+    private fun showVideoDialog() {
+        val dialog = ExampleDialogFragment()
+        dialog.show(supportFragmentManager, "ExampleDialogFragment")
+    }
+
+    private fun setupClickListeners() {
+
         iconVoltarTelaInicial.setOnClickListener { navigateTelaPrincipal() }
 
         // Botão de iniciar o timer
@@ -94,9 +118,33 @@ class TreinoIniciadoActivity : AppCompatActivity() {
             }
             dialog.show(supportFragmentManager, "TimerDialog")
         }
+    }
 
+    private fun setupCheckBoxListeners() {
+        val checkBoxExercicio1 = findViewById<CheckBox>(R.id.checkBoxExercicio1)
+        val checkBoxExercicio2 = findViewById<CheckBox>(R.id.checkBoxExercicio2)
+        val checkBoxExercicio3 = findViewById<CheckBox>(R.id.checkBoxExercicio3)
 
+        checkBoxExercicio1.setOnCheckedChangeListener { _, isChecked ->
+            updateExerciciosConcluidos(isChecked)
+        }
 
+        checkBoxExercicio2.setOnCheckedChangeListener { _, isChecked ->
+            updateExerciciosConcluidos(isChecked)
+        }
+
+        checkBoxExercicio3.setOnCheckedChangeListener { _, isChecked ->
+            updateExerciciosConcluidos(isChecked)
+        }
+    }
+
+    private fun updateExerciciosConcluidos(isChecked: Boolean) {
+        exerciciosConcluidos += if (isChecked) 1 else -1
+        updateExerciciosFeitosText()
+    }
+
+    private fun updateExerciciosFeitosText() {
+        textExerciciosFeitos.text = "$exerciciosConcluidos de $totalExercicios exercícios"
     }
 
     private fun startTimer() {
