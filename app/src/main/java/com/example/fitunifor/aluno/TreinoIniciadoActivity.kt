@@ -15,7 +15,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fitunifor.R
-import java.util.Timer
 
 class TreinoIniciadoActivity : AppCompatActivity() {
 
@@ -50,7 +49,7 @@ class TreinoIniciadoActivity : AppCompatActivity() {
         }
 
         // Inicializa os componentes da interface
-        iconVoltarTelaInicial = findViewById(R.id.icon_back_tela_principal)
+        iconVoltarTelaInicial = findViewById(R.id.icon_back_historico_treinos)
         timerText = findViewById(R.id.timer_text)
         startButton = findViewById(R.id.icon_start_timer)
         pauseButton = findViewById(R.id.icon_pause_timer)

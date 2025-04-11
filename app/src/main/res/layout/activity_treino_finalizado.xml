@@ -47,7 +47,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="5dp"
                 android:fontFamily="sans-serif-light"
-                android:text="0 de 3 exercícios"
+                android:text="3 de 3 exercícios"
                 android:textColor="#050505"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -62,96 +62,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="360dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                app:cardBackgroundColor="#B4B4B4"
-                app:cardCornerRadius="10dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <!-- Temporizador -->
-                    <LinearLayout
-                        android:layout_width="143dp"
-                        android:layout_height="97dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/text_descanso"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Descanso"
-                            android:textColor="#050505"
-                            android:textSize="22sp" />
-
-                        <TextView
-                            android:id="@+id/timer_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="00:10"
-                            android:textColor="#000000"
-                            android:textSize="36sp" />
-                    </LinearLayout>
-
-                    <!-- Controles do temporizador -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal">
-
-                        <!-- Botão Iniciar (visível inicialmente) -->
-                        <ImageView
-                            android:id="@+id/icon_start_timer"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginEnd="24dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/icon_play_timer"
-                            tools:srcCompat="@drawable/icon_play_timer" />
-
-                        <!-- Botão Pausar (invisível inicialmente) -->
-                        <ImageView
-                            android:id="@+id/icon_pause_timer"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginEnd="24dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:src="@drawable/icon_pause_timer"
-                            android:visibility="gone" />
-
-                        <!-- Botão Reiniciar -->
-                        <ImageView
-                            android:id="@+id/icon_reset_timer"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:src="@drawable/icon_reset_timer" />
-
-                        <ImageView
-                            android:id="@+id/icon_edit_timer"
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:layout_marginHorizontal="20dp"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:src="@drawable/icon_edit_timer" />
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/textView19"
@@ -182,6 +93,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="296dp"
                         android:layout_marginTop="68dp"
+                        android:checked="true"
+                        android:clickable="false"
                         android:background="@null"
                         android:scaleX="1.5"
                         android:scaleY="1.5"
@@ -209,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="48dp"
-                        android:text="• 1. 6-8 repetições • 30kg"
+                        android:text="• 1. 8 repetições • 30kg"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -223,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="84dp"
-                        android:text="• 2. 6-8 repetições • 30kg"
+                        android:text="• 2. 8 repetições • 30kg"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -245,19 +158,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/icon_play_video_supino_inclinado"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="2dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.715"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.531"
-                        app:srcCompat="@drawable/icon_play_video"
-                        tools:srcCompat="@drawable/icon_play_video" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -279,6 +179,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="296dp"
                         android:layout_marginTop="68dp"
+                        android:checked="true"
+                        android:clickable="false"
                         android:background="@null"
                         android:scaleX="1.5"
                         android:scaleY="1.5"
@@ -342,19 +244,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageView8"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="2dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.715"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.531"
-                        app:srcCompat="@drawable/icon_play_video"
-                        tools:srcCompat="@drawable/icon_play_video" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -376,6 +265,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="296dp"
                         android:layout_marginTop="68dp"
+                        android:checked="true"
+                        android:clickable="false"
                         android:background="@null"
                         android:scaleX="1.5"
                         android:scaleY="1.5"
@@ -439,30 +330,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageView80"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="2dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.715"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.531"
-                        app:srcCompat="@drawable/icon_play_video"
-                        tools:srcCompat="@drawable/icon_play_video" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-
-                android:text="Finalizar Treino" />
 
             <TextView
                 android:id="@+id/textView3"

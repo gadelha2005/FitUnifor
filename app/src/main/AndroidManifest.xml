@@ -64,7 +64,20 @@
             android:parentActivityName=".aluno.MeusTreinosActivity"/>
 
         <activity android:name=".aluno.TreinoIniciadoActivity"/>
-        
+
+        <activity
+            android:name=".aluno.TreinoFinalizadoActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".aluno.IAActivity"
+            android:exported="false"
+            android:parentActivityName=".aluno.PrincipalActivity"/>
+
+        <activity
+            android:name=".aluno.CalendarioActivity"
+            android:exported="false"
+            android:parentActivityName=".aluno.PrincipalActivity"/>
 
     </application>
 

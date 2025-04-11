@@ -209,7 +209,8 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
-                        tools:srcCompat="@tools:sample/avatars" />
+                        app:srcCompat="@drawable/icon_nivel_aluno"
+                        tools:srcCompat="@drawable/icon_nivel_aluno" />
 
                     <TextView
                         android:id="@+id/text_nivel_aluno"
@@ -296,8 +297,9 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        tools:srcCompat="@tools:sample/avatars"
-                        android:clickable="false"/>
+                        android:clickable="false"
+                        app:srcCompat="@drawable/icon_lista_treino"
+                        tools:srcCompat="@drawable/icon_lista_treino" />
 
                     <TextView
                         android:id="@+id/textView9"
@@ -334,7 +336,8 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        tools:srcCompat="@tools:sample/avatars" />
+                        app:srcCompat="@drawable/icon_ia"
+                        tools:srcCompat="@drawable/icon_ia" />
 
                     <TextView
                         android:id="@+id/textView10"

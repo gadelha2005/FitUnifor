@@ -26,15 +26,21 @@ class PrincipalActivity : AppCompatActivity() {
 
         // Inicializa os componentes
         val cardMeusTreinos = findViewById<CardView>(R.id.card_meus_treinos)
+        val cardIa = findViewById<CardView>(R.id.card_ia)
+        val cardCalendario = findViewById<CardView>(R.id.card_calendario)
         val buttonIniciarTreino = findViewById<Button>(R.id.button_iniciar_treino1)
         val btnParticiparYoga = findViewById<Button>(R.id.button_participar_aula_yoga)
         val btnParticiparZumba = findViewById<Button>(R.id.button_participar_aula_zumba)
         val textIntegrantesYoga = findViewById<TextView>(R.id.text_integrantes_alunos_yoga)
         val textIntegrantesZumba = findViewById<TextView>(R.id.text_integrantes_alunos_zumba)
 
+
         // Configura os listeners
         cardMeusTreinos.setOnClickListener { navigateToMeusTreinos() }
+        cardCalendario.setOnClickListener { navigateCalendario() }
+        cardIa.setOnClickListener { navigteIa() }
         buttonIniciarTreino.setOnClickListener { navigateToTreinoIniciado() }
+
 
         // Listener para o botão de Yoga
         btnParticiparYoga.setOnClickListener {
@@ -108,4 +114,35 @@ class PrincipalActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+    private  fun navigteIa(){
+        try {
+            val intent = Intent(this, IAActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        } catch (e: Exception) {
+            Toast.makeText(this,
+                "Não foi possível ir para a tela de ia\n${e.localizedMessage}",
+                Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
+    }
+
+    private fun navigateCalendario(){
+        try {
+            val intent = Intent(this, CalendarioActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        } catch (e: Exception) {
+            Toast.makeText(this,
+                "Não foi possível ir para a tela de Calendario\n${e.localizedMessage}",
+                Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
+    }
+
+
 }

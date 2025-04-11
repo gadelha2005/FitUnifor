@@ -104,7 +104,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Repetições: 6 à 8"
+                            android:text="Repetições: 8"
                             android:textColor="#050505"
                             android:textSize="18sp" />
 
@@ -191,7 +191,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Repetições: 6 à 8"
+                            android:text="Repetições: 8"
                             android:textColor="#050505"
                             android:textSize="18sp" />
 
@@ -278,7 +278,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Repetições: 6 à 8"
+                            android:text="Repetições: 8"
                             android:textColor="#050505"
                             android:textSize="18sp" />
 
@@ -315,7 +315,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/button_iniciar_treino"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
