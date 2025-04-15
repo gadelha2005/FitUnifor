@@ -11,7 +11,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#D9D9D9">
+        app:cardBackgroundColor="#007BFF">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Treino A: Peito + Ombro + Tríceps"
-                android:textColor="#050505"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -59,7 +59,7 @@
                 android:layout_height="350dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                app:cardBackgroundColor="#D9D9D9"
+                app:cardBackgroundColor="#E9F7FF"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
@@ -89,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="Supino Inclinado com halteres"
-                            android:textColor="#000000"
+                            android:textColor="#6C757D"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -98,21 +98,21 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             android:text="Séries: 4"
-                            android:textColor="#050505"
+                            android:textColor="#6C757D"
                             android:textSize="18sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Repetições: 8"
-                            android:textColor="#050505"
+                            android:textColor="#6C757D"
                             android:textSize="18sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Carga: 30 kg"
-                            android:textColor="#050505"
+                            android:textColor="#6C757D"
                             android:textSize="18sp" />
                     </LinearLayout>
 
@@ -125,7 +125,7 @@
                             android:id="@+id/videoView3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#595353" />
+                            android:background="#007BFF" />
 
                         <ImageView
                             android:id="@+id/playButton3"
@@ -146,7 +146,7 @@
                 android:layout_height="350dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                app:cardBackgroundColor="#D9D9D9"
+                app:cardBackgroundColor="#E9F7FF"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
@@ -176,7 +176,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="Elevação Lateral"
-                            android:textColor="#000000"
+                            android:textColor="#6C757D"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -185,21 +185,21 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             android:text="Séries: 3"
-                            android:textColor="#050505"
+                            android:textColor="#6C757D"
                             android:textSize="18sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Repetições: 8"
-                            android:textColor="#050505"
+                            android:textColor="#6C757D"
                             android:textSize="18sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Carga: 10 kg"
-                            android:textColor="#050505"
+                            android:textColor="#6C757D"
                             android:textSize="18sp" />
                     </LinearLayout>
 
@@ -212,17 +212,17 @@
                             android:id="@+id/videoView4"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#595353" />
+                            android:background="#007BFF" />
 
                         <ImageView
                             android:id="@+id/playButton4"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/icon_play_video"
-                            android:contentDescription="Play Video"
                             android:clickable="true"
-                            android:focusable="true" />
+                            android:contentDescription="Play Video"
+                            android:focusable="true"
+                            android:src="@drawable/icon_play_video" />
                     </FrameLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -233,7 +233,7 @@
                 android:layout_height="350dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                app:cardBackgroundColor="#D9D9D9"
+                app:cardBackgroundColor="#E9F7FF"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
@@ -263,7 +263,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="Tríceps Corda"
-                            android:textColor="#000000"
+                            android:textColor="#6C757D"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -272,21 +272,21 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             android:text="Séries: 3"
-                            android:textColor="#050505"
+                            android:textColor="#6C757D"
                             android:textSize="18sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Repetições: 8"
-                            android:textColor="#050505"
+                            android:textColor="#6C757D"
                             android:textSize="18sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Carga: 25 kg"
-                            android:textColor="#050505"
+                            android:textColor="#6C757D"
                             android:textSize="18sp" />
                     </LinearLayout>
 
@@ -299,17 +299,17 @@
                             android:id="@+id/videoView5"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#595353" />
+                            android:background="#007BFF" />
 
                         <ImageView
                             android:id="@+id/playButton5"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/icon_play_video"
-                            android:contentDescription="Play Video"
                             android:clickable="true"
-                            android:focusable="true" />
+                            android:contentDescription="Play Video"
+                            android:focusable="true"
+                            android:src="@drawable/icon_play_video" />
                     </FrameLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -320,7 +320,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
-                android:text="Iniciar Treino" />
+                android:backgroundTint="#007BFF"
+                android:text="Iniciar Treino"
+                android:textColor="#F8F8F8" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

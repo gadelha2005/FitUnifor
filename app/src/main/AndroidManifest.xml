@@ -79,6 +79,9 @@
             android:exported="false"
             android:parentActivityName=".aluno.PrincipalActivity"/>
 
+        <activity android:name=".administrador.PainelAdminstrativoActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>

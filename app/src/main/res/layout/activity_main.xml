@@ -11,33 +11,35 @@
     tools:context=".MainActivity">
 
     <!-- Logo (Fixo) -->
-    <ImageView
-        android:id="@+id/image_logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/logo_unifor"/>
 
     <!-- TabLayout (Fixo) -->
+    <ImageView
+        android:id="@+id/image_logo"
+        android:layout_width="300dp"
+        android:layout_height="178dp"
+        android:src="@drawable/logo_unifor" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="#D9D9D9"
+        android:background="#419AFF"
+        app:tabIndicatorColor="#101010"
         app:tabMode="fixed"
-        app:tabTextColor="#020202">
+        app:tabTextColor="#F4F4F4">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login"/>
+            android:text="Login" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_cadastro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cadastro"/>
+            android:text="Cadastro" />
     </com.google.android.material.tabs.TabLayout>
 
     <!-- CardView (Recipiente Vazio - Conteúdo será injetado dinamicamente) -->
@@ -46,6 +48,6 @@
         android:layout_width="300dp"
         android:layout_height="350dp"
         android:layout_marginTop="40dp"
-        app:cardBackgroundColor="#D9D9D9"
-        app:cardCornerRadius="30dp"/>
+        app:cardBackgroundColor="#E9F7FF"
+        app:cardCornerRadius="30dp" />
 </LinearLayout>

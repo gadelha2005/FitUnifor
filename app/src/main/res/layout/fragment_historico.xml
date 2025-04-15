@@ -22,7 +22,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:clickable="true"
-                app:cardBackgroundColor="#D9D9D9"
+                app:cardBackgroundColor="#E9F7FF"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
@@ -50,7 +50,7 @@
                         android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-black"
                         android:text="Treino A: Peito + Ombro + Tríceps"
-                        android:textColor="#050505"
+                        android:textColor="#6C757D"
                         android:textSize="20sp" />
 
                     <TextView
@@ -83,7 +83,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:clickable="true"
-                app:cardBackgroundColor="#D9D9D9"
+                app:cardBackgroundColor="#E9F7FF"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
@@ -111,7 +111,7 @@
                         android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-black"
                         android:text="Treino B: Costas + Bíceps"
-                        android:textColor="#050505"
+                        android:textColor="#6C757D"
                         android:textSize="20sp" />
 
                     <TextView

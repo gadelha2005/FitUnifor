@@ -11,7 +11,7 @@
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_gravity="center"
-        app:cardBackgroundColor="#D9D9D9"
+        app:cardBackgroundColor="#E9F7FF"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -22,10 +22,10 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
                 android:layout_width="175dp"
-                android:layout_height="100dp" />
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp" />
 
             <TextView
                 android:id="@+id/text_nome_aula"
@@ -35,7 +35,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Yoga"
-                android:textColor="#0D0D0D"
+                android:textColor="#007BFF"
                 android:textSize="16sp" />
 
             <androidx.cardview.widget.CardView
@@ -50,7 +50,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:text="Prof João"
-                android:textColor="#0D0D0D"
+                android:textColor="#6C757D"
                 android:textSize="16sp" />
 
             <TextView
@@ -61,7 +61,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Capacidade"
-                android:textColor="#0D0D0D"
+                android:textColor="#6C757D"
                 android:textSize="16sp" />
 
             <TextView
@@ -71,7 +71,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:text="20 alunos"
-                android:textColor="#0D0D0D"
+                android:textColor="#6C757D"
                 android:textSize="16sp" />
 
             <TextView
@@ -82,7 +82,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Integrantes"
-                android:textColor="#0D0D0D"
+                android:textColor="#6C757D"
                 android:textSize="16sp" />
 
             <TextView
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="0 alunos"
-                android:textColor="#0D0D0D"
+                android:textColor="#6C757D"
                 android:textSize="16sp" />
 
             <Button
@@ -100,7 +100,9 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:text="Participar" />
+                android:backgroundTint="#007BFF"
+                android:text="Participar"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

@@ -22,7 +22,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:clickable="true"
-                app:cardBackgroundColor="#D9D9D9"
+                app:cardBackgroundColor="#E9F7FF"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
@@ -50,7 +50,7 @@
                         android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-black"
                         android:text="Treino A: Peito + Ombro + Tríceps"
-                        android:textColor="#050505"
+                        android:textColor="#6C757D"
                         android:textSize="20sp" />
 
                     <androidx.cardview.widget.CardView
@@ -58,7 +58,7 @@
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="10dp"
-                        app:cardBackgroundColor="#F8F8F8"
+                        app:cardBackgroundColor="#FFFAFA"
                         app:cardCornerRadius="50dp">
 
                         <TextView
@@ -67,7 +67,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="6 exercícios"
-                            android:textColor="#050505" />
+                            android:textColor="#6C757D" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -75,7 +75,7 @@
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="10dp"
-                        app:cardBackgroundColor="#F6F6F6"
+                        app:cardBackgroundColor="#FFFAFA"
                         app:cardCornerRadius="50dp">
 
                         <TextView
@@ -84,7 +84,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="Segunda"
-                            android:textColor="#050505" />
+                            android:textColor="#6C757D" />
                     </androidx.cardview.widget.CardView>
 
                     <Button
@@ -93,7 +93,9 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
+                        android:backgroundTint="#007BFF"
                         android:text="Iniciar Treino"
+                        android:textColor="#FBFBFB"
                         app:cornerRadius="30dp" />
 
                 </LinearLayout>
@@ -106,7 +108,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:clickable="true"
-                app:cardBackgroundColor="#D9D9D9"
+                app:cardBackgroundColor="#E9F7FF"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
@@ -134,7 +136,7 @@
                         android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-black"
                         android:text="Treino B: Costas + Bíceps"
-                        android:textColor="#050505"
+                        android:textColor="#6C757D"
                         android:textSize="20sp" />
 
                     <androidx.cardview.widget.CardView
@@ -142,7 +144,7 @@
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="10dp"
-                        app:cardBackgroundColor="#F8F8F8"
+                        app:cardBackgroundColor="#FFFAFA"
                         app:cardCornerRadius="50dp">
 
                         <TextView
@@ -151,7 +153,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="5 exercícios"
-                            android:textColor="#050505" />
+                            android:textColor="#6C757D" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -159,7 +161,7 @@
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="10dp"
-                        app:cardBackgroundColor="#F6F6F6"
+                        app:cardBackgroundColor="#FFFAFA"
                         app:cardCornerRadius="50dp">
 
                         <TextView
@@ -168,7 +170,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="Terça"
-                            android:textColor="#050505" />
+                            android:textColor="#6C757D" />
                     </androidx.cardview.widget.CardView>
 
                     <Button
@@ -177,7 +179,9 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
+                        android:backgroundTint="#007BFF"
                         android:text="Iniciar Treino"
+                        android:textColor="#FBFBFB"
                         app:cornerRadius="30dp" />
 
                 </LinearLayout>
@@ -190,7 +194,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:clickable="true"
-                app:cardBackgroundColor="#D9D9D9"
+                app:cardBackgroundColor="#E9F7FF"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
@@ -218,7 +222,7 @@
                         android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-black"
                         android:text="Treino C: Perna"
-                        android:textColor="#050505"
+                        android:textColor="#6C757D"
                         android:textSize="20sp" />
 
                     <androidx.cardview.widget.CardView
@@ -226,7 +230,7 @@
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="10dp"
-                        app:cardBackgroundColor="#F8F8F8"
+                        app:cardBackgroundColor="#FFFAFA"
                         app:cardCornerRadius="50dp">
 
                         <TextView
@@ -235,7 +239,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="6 exercícios"
-                            android:textColor="#050505" />
+                            android:textColor="#6C757D" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -243,7 +247,7 @@
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="10dp"
-                        app:cardBackgroundColor="#F6F6F6"
+                        app:cardBackgroundColor="#FFFAFA"
                         app:cardCornerRadius="50dp">
 
                         <TextView
@@ -252,7 +256,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="Quinta"
-                            android:textColor="#050505" />
+                            android:textColor="#6C757D" />
                     </androidx.cardview.widget.CardView>
 
                     <Button
@@ -261,7 +265,9 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
+                        android:backgroundTint="#007BFF"
                         android:text="Iniciar Treino"
+                        android:textColor="#FBFBFB"
                         app:cornerRadius="30dp" />
 
                 </LinearLayout>
