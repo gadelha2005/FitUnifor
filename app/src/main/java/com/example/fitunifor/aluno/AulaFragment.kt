@@ -1,5 +1,6 @@
+package com.example.fitunifor.aluno
+
 import Aula
-import AulasAdapterAluno
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -45,21 +46,25 @@ class AulaFragment : Fragment() {
             .addOnSuccessListener { result ->
                 listaAulas.clear()
                 for (document in result) {
-                    val aula = document.toObject(Aula::class.java)?.copy(id = document.id)
-                    if (aula != null) {
-                        listaAulas.add(aula)
+                    val aula = document.toObject(Aula::class.java).apply {
+                        id = document.id
+                        // Garante que alunosMatriculados está sendo carregado corretamente
+                        alunosMatriculados = document.getLong("alunosMatriculados")?.toInt() ?: 0
+                        Log.d("AulaFragment", "Carregando aula: $nome - Matriculados: $alunosMatriculados")
                     }
+                    listaAulas.add(aula)
                 }
                 adapter.atualizarAulas(listaAulas)
             }
             .addOnFailureListener { exception ->
-                Log.e("AulaFragment", "Erro ao carregar aulas: ${exception.message}", exception)
+                Log.e("AulaFragment", "Erro ao carregar aulas", exception)
                 Toast.makeText(context, "Erro ao carregar aulas: ${exception.message}", Toast.LENGTH_LONG).show()
             }
     }
 
     private fun getDiaSemanaAtual(): String {
         val calendar = Calendar.getInstance()
-        return SimpleDateFormat("EEEE", Locale("pt", "BR")).format(calendar.time).replaceFirstChar { it.uppercase() }
+        return SimpleDateFormat("EEEE", Locale("pt", "BR")).format(calendar.time)
+            .replaceFirstChar { it.uppercase() }
     }
 }

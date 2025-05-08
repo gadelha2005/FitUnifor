@@ -1,24 +1,26 @@
+package com.example.fitunifor.aluno
+
 import Aula
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitunifor.R
 import com.google.firebase.firestore.FirebaseFirestore
-import android.util.Log
 
 class AulasAdapterAluno(
     private var aulas: List<Aula>
 ) : RecyclerView.Adapter<AulasAdapterAluno.AulaAlunoViewHolder>() {
 
-    // Inicialize o Firestore
     private val db = FirebaseFirestore.getInstance()
 
-    // Método para atualizar as aulas
     fun atualizarAulas(novasAulas: List<Aula>) {
         aulas = novasAulas
-        notifyDataSetChanged() // Notifica o RecyclerView para atualizar a lista
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AulaAlunoViewHolder {
@@ -28,53 +30,62 @@ class AulasAdapterAluno(
 
     override fun onBindViewHolder(holder: AulaAlunoViewHolder, position: Int) {
         val aula = aulas[position]
+        Log.d("AulasAdapter", "Binding aula: ${aula.nome} - Matriculados: ${aula.alunosMatriculados}")
 
+        // Atualiza a UI com os valores atuais
         holder.nomeAula.text = aula.nome
         holder.professor.text = "Prof ${aula.professor}"
         holder.horario.text = "Horário: ${aula.horario}"
         holder.capacidade.text = "${aula.maxAlunos} alunos"
         holder.textIntegrantes.text = "${aula.alunosMatriculados} alunos"
 
-        // Botão participar
-        holder.btnParticipar.text = if (aula.temVagas) {
-            if (aula.alunosMatriculados > 0) "Cancelar" else "Participar"
-        } else {
-            "Sem vagas"
+        val temVagaDisponivel = aula.alunosMatriculados < aula.maxAlunos
+        holder.btnParticipar.text = when {
+            aula.alunosMatriculados > 0 -> "Cancelar"
+            temVagaDisponivel -> "Participar"
+            else -> "Lotado"
         }
-        holder.btnParticipar.isEnabled = aula.temVagas || aula.alunosMatriculados > 0
+        holder.btnParticipar.isEnabled = temVagaDisponivel || aula.alunosMatriculados > 0
 
         holder.btnParticipar.setOnClickListener {
             val aulaRef = db.collection("aulas").document(aula.id)
+            holder.btnParticipar.isEnabled = false
 
-            if (aula.temVagas && holder.btnParticipar.text == "Participar") {
-                // Incrementa alunosMatriculados
+            if (holder.btnParticipar.text == "Participar") {
                 db.runTransaction { transaction ->
                     val snapshot = transaction.get(aulaRef)
                     val currentAlunos = snapshot.getLong("alunosMatriculados")?.toInt() ?: 0
+                    val maxAlunos = snapshot.getLong("maxAlunos")?.toInt() ?: 0
+
+                    if (currentAlunos >= maxAlunos) {
+                        throw Exception("Sem vagas disponíveis")
+                    }
+
                     transaction.update(aulaRef, "alunosMatriculados", currentAlunos + 1)
-                }.addOnSuccessListener {
-                    holder.btnParticipar.text = "Cancelar"
-                    holder.textIntegrantes.text = "${aula.alunosMatriculados + 1} alunos"
+                    currentAlunos + 1 // Retorna novo valor para o successListener
+                }.addOnSuccessListener { novosAlunos ->
+                    aula.alunosMatriculados = novosAlunos
+                    notifyItemChanged(position)
                 }.addOnFailureListener { e ->
-                    Log.e("Participar", "Erro ao participar: ${e.message}", e)
-                    Toast.makeText(holder.itemView.context, "Erro ao participar: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            } else if (aula.alunosMatriculados > 0 && holder.btnParticipar.text == "Cancelar") {
-                // Decrementa alunosMatriculados
-                db.runTransaction { transaction ->
-                    val snapshot = transaction.get(aulaRef)
-                    val currentAlunos = snapshot.getLong("alunosMatriculados")?.toInt() ?: 0
-                    transaction.update(aulaRef, "alunosMatriculados", currentAlunos - 1)
-                }.addOnSuccessListener {
-                    holder.btnParticipar.text = "Participar"
-                    holder.textIntegrantes.text = "${aula.alunosMatriculados - 1} alunos"
-                }.addOnFailureListener { e ->
-                    Log.e("Cancelar", "Erro ao cancelar: ${e.message}", e)
-                    Toast.makeText(holder.itemView.context, "Erro ao cancelar: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("Participar", "Erro ao participar", e)
+                    Toast.makeText(holder.itemView.context, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+                    holder.btnParticipar.isEnabled = true
                 }
             } else {
-                // Quando não há vagas ou erro no estado do botão
-                Toast.makeText(holder.itemView.context, "Não é possível participar", Toast.LENGTH_SHORT).show()
+                db.runTransaction { transaction ->
+                    val snapshot = transaction.get(aulaRef)
+                    val currentAlunos = snapshot.getLong("alunosMatriculados")?.toInt() ?: 0
+                    val novosAlunos = (currentAlunos - 1).coerceAtLeast(0)
+                    transaction.update(aulaRef, "alunosMatriculados", novosAlunos)
+                    novosAlunos // Retorna novo valor para o successListener
+                }.addOnSuccessListener { novosAlunos ->
+                    aula.alunosMatriculados = novosAlunos
+                    notifyItemChanged(position)
+                }.addOnFailureListener { e ->
+                    Log.e("Cancelar", "Erro ao cancelar", e)
+                    Toast.makeText(holder.itemView.context, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+                    holder.btnParticipar.isEnabled = true
+                }
             }
         }
     }

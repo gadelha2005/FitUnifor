@@ -1,7 +1,6 @@
 package com.example.fitunifor.aluno
 
 import Aula
-import AulasAdapterAluno
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -19,7 +18,6 @@ import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-
 class PrincipalActivity : AppCompatActivity() {
 
     private val db = Firebase.firestore
@@ -35,13 +33,12 @@ class PrincipalActivity : AppCompatActivity() {
         recyclerAulas = findViewById(R.id.recycler_aulas_diarias)
         setupAulasRecyclerView()
 
-        // Botões e cards
+        // Configuração de botões e cards
         findViewById<CardView>(R.id.card_meus_treinos).setOnClickListener { navigateToMeusTreinos() }
         findViewById<CardView>(R.id.card_calendario).setOnClickListener { navigateCalendario() }
         findViewById<CardView>(R.id.card_ia).setOnClickListener { navigateIa() }
         findViewById<Button>(R.id.button_iniciar_treino1).setOnClickListener { navigateToTreinoIniciado() }
 
-        // Carrega aulas do Firebase
         carregarAulasDoFirebase()
     }
 
@@ -70,18 +67,17 @@ class PrincipalActivity : AppCompatActivity() {
     }
 
     private fun setupAulasRecyclerView() {
-        recyclerAulas.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerAulas.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         adapter = AulasAdapterAluno(emptyList())
         recyclerAulas.adapter = adapter
     }
 
     private fun carregarAulasDoFirebase() {
-        val db = Firebase.firestore
         val ref = db.collection("aulas")
-
         val diaAtual = getDiaSemanaAtual()
 
-        ref.whereEqualTo("diaSemana", diaAtual) // Filtra as aulas pelo dia da semana
+        ref.whereEqualTo("diaSemana", diaAtual)
             .get()
             .addOnSuccessListener { result ->
                 val listaAulas = mutableListOf<Aula>()
@@ -98,9 +94,9 @@ class PrincipalActivity : AppCompatActivity() {
 
     private fun getDiaSemanaAtual(): String {
         val calendar = Calendar.getInstance()
-        return SimpleDateFormat("EEEE", java.util.Locale("pt", "BR")).format(calendar.time).replaceFirstChar { it.uppercase() }
+        return SimpleDateFormat("EEEE", java.util.Locale("pt", "BR")).format(calendar.time)
+            .replaceFirstChar { it.uppercase() }
     }
-
 
     private fun navigateToMeusTreinos() {
         try {
