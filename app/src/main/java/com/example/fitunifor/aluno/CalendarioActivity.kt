@@ -1,5 +1,6 @@
 package com.example.fitunifor.aluno
 
+import AulaFragment
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView

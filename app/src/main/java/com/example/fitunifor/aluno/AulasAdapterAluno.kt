@@ -1,20 +1,25 @@
-package com.example.fitunifor.aluno
-
 import Aula
-import android.view.View
-import android.widget.ImageView
 import android.view.LayoutInflater
-import android.widget.TextView
-import android.widget.Button
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitunifor.R
+import com.google.firebase.firestore.FirebaseFirestore
+import android.util.Log
 
 class AulasAdapterAluno(
-    private val aulas: List<Aula>,
-    private val isAdmin: Boolean
+    private var aulas: List<Aula>
 ) : RecyclerView.Adapter<AulasAdapterAluno.AulaAlunoViewHolder>() {
+
+    // Inicialize o Firestore
+    private val db = FirebaseFirestore.getInstance()
+
+    // Método para atualizar as aulas
+    fun atualizarAulas(novasAulas: List<Aula>) {
+        aulas = novasAulas
+        notifyDataSetChanged() // Notifica o RecyclerView para atualizar a lista
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AulaAlunoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_aula_aluno, parent, false)
@@ -26,49 +31,55 @@ class AulasAdapterAluno(
 
         holder.nomeAula.text = aula.nome
         holder.professor.text = "Prof ${aula.professor}"
-        holder.horario.text = aula.horario
-        holder.capacidade.text = "${aula.maxAlunos}/${aula.alunosMatriculados}"
-
-        // Mostra o número de participantes
+        holder.horario.text = "Horário: ${aula.horario}"
+        holder.capacidade.text = "${aula.maxAlunos} alunos"
         holder.textIntegrantes.text = "${aula.alunosMatriculados} alunos"
 
-        // Configura o botão de participação
-        if (aula.alunosMatriculados < aula.maxAlunos) {
-            if (aula.alunosMatriculados > 0) {
-                holder.btnParticipar.text = "Cancelar"
-            } else {
-                holder.btnParticipar.text = "Participar"
-            }
+        // Botão participar
+        holder.btnParticipar.text = if (aula.temVagas) {
+            if (aula.alunosMatriculados > 0) "Cancelar" else "Participar"
         } else {
-            holder.btnParticipar.text = "Sem vagas"
-            holder.btnParticipar.isEnabled = false
+            "Sem vagas"
         }
+        holder.btnParticipar.isEnabled = aula.temVagas || aula.alunosMatriculados > 0
 
         holder.btnParticipar.setOnClickListener {
-            // Verifica se o aluno já está inscrito
-            if (aula.alunosMatriculados < aula.maxAlunos && holder.btnParticipar.text == "Participar") {
-                // O aluno não está participando e há vagas disponíveis
-                aula.alunosMatriculados++
-                holder.btnParticipar.text = "Cancelar"
+            val aulaRef = db.collection("aulas").document(aula.id)
+
+            if (aula.temVagas && holder.btnParticipar.text == "Participar") {
+                // Incrementa alunosMatriculados
+                db.runTransaction { transaction ->
+                    val snapshot = transaction.get(aulaRef)
+                    val currentAlunos = snapshot.getLong("alunosMatriculados")?.toInt() ?: 0
+                    transaction.update(aulaRef, "alunosMatriculados", currentAlunos + 1)
+                }.addOnSuccessListener {
+                    holder.btnParticipar.text = "Cancelar"
+                    holder.textIntegrantes.text = "${aula.alunosMatriculados + 1} alunos"
+                }.addOnFailureListener { e ->
+                    Log.e("Participar", "Erro ao participar: ${e.message}", e)
+                    Toast.makeText(holder.itemView.context, "Erro ao participar: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             } else if (aula.alunosMatriculados > 0 && holder.btnParticipar.text == "Cancelar") {
-                // O aluno está participando, então ele pode cancelar
-                aula.alunosMatriculados--
-                holder.btnParticipar.text = "Participar"
+                // Decrementa alunosMatriculados
+                db.runTransaction { transaction ->
+                    val snapshot = transaction.get(aulaRef)
+                    val currentAlunos = snapshot.getLong("alunosMatriculados")?.toInt() ?: 0
+                    transaction.update(aulaRef, "alunosMatriculados", currentAlunos - 1)
+                }.addOnSuccessListener {
+                    holder.btnParticipar.text = "Participar"
+                    holder.textIntegrantes.text = "${aula.alunosMatriculados - 1} alunos"
+                }.addOnFailureListener { e ->
+                    Log.e("Cancelar", "Erro ao cancelar: ${e.message}", e)
+                    Toast.makeText(holder.itemView.context, "Erro ao cancelar: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                // Se não houver vagas ou o aluno não pode cancelar, mostra um aviso
-                Toast.makeText(holder.itemView.context, "Sem vagas disponíveis ou você não está inscrito", Toast.LENGTH_SHORT).show()
+                // Quando não há vagas ou erro no estado do botão
+                Toast.makeText(holder.itemView.context, "Não é possível participar", Toast.LENGTH_SHORT).show()
             }
-
-            // Atualiza o número de participantes
-            holder.textIntegrantes.text = "${aula.alunosMatriculados} alunos"
-            notifyItemChanged(position)
         }
-
     }
 
-    override fun getItemCount(): Int {
-        return aulas.size
-    }
+    override fun getItemCount(): Int = aulas.size
 
     class AulaAlunoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nomeAula: TextView = itemView.findViewById(R.id.text_nome_aula)

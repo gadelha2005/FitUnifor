@@ -1,6 +1,7 @@
 package com.example.fitunifor.aluno
 
 import Aula
+import AulasAdapterAluno
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,41 +16,39 @@ import com.example.fitunifor.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Calendar
+
 
 class PrincipalActivity : AppCompatActivity() {
 
     private val db = Firebase.firestore
+    private lateinit var recyclerAulas: RecyclerView
+    private lateinit var adapter: AulasAdapterAluno
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
 
-        // Configurar o nome do aluno
         setupNomeAluno()
 
-        // Inicializa os componentes
-        val cardMeusTreinos = findViewById<CardView>(R.id.card_meus_treinos)
-        val cardIa = findViewById<CardView>(R.id.card_ia)
-        val cardCalendario = findViewById<CardView>(R.id.card_calendario)
-        val buttonIniciarTreino = findViewById<Button>(R.id.button_iniciar_treino1)
-        val recyclerAulas = findViewById<RecyclerView>(R.id.recycler_aulas_diarias)
+        recyclerAulas = findViewById(R.id.recycler_aulas_diarias)
+        setupAulasRecyclerView()
 
-        // Configura o RecyclerView
-        setupAulasRecyclerView(recyclerAulas)
+        // Botões e cards
+        findViewById<CardView>(R.id.card_meus_treinos).setOnClickListener { navigateToMeusTreinos() }
+        findViewById<CardView>(R.id.card_calendario).setOnClickListener { navigateCalendario() }
+        findViewById<CardView>(R.id.card_ia).setOnClickListener { navigateIa() }
+        findViewById<Button>(R.id.button_iniciar_treino1).setOnClickListener { navigateToTreinoIniciado() }
 
-        // Configura os listeners
-        cardMeusTreinos.setOnClickListener { navigateToMeusTreinos() }
-        cardCalendario.setOnClickListener { navigateCalendario() }
-        cardIa.setOnClickListener { navigteIa() }
-        buttonIniciarTreino.setOnClickListener { navigateToTreinoIniciado() }
+        // Carrega aulas do Firebase
+        carregarAulasDoFirebase()
     }
 
     private fun setupNomeAluno() {
-        // Tenta obter o nome da intent primeiro
         var nomeUsuario = intent.getStringExtra("NOME_USUARIO")
 
         if (nomeUsuario.isNullOrEmpty()) {
-            // Se não veio pela intent, busca do Firestore
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             db.collection("usuarios").document(userId).get()
                 .addOnSuccessListener { document ->
@@ -70,83 +69,72 @@ class PrincipalActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.text_nome_aluno).text = "Olá, ${nome ?: "Aluno"}"
     }
 
-    private fun setupAulasRecyclerView(recyclerView: RecyclerView) {
-        // Criar lista de aulas de exemplo
-        val listaAulas = listOf(
-            Aula(
-                id = "1",
-                nome = "Yoga",
-                professor = "João Silva",
-                horario = "09:00",
-                maxAlunos = 20,
-                alunosMatriculados = 0,
-                imagem = "image_aula_yoga",
-                diaSemana = "Segunda"
-            ),
-            Aula(
-                id = "2",
-                nome = "Zumba",
-                professor = "Marcela Souza",
-                horario = "20:00",
-                maxAlunos = 25,
-                alunosMatriculados = 0,
-                imagem = "image_aula_yoga",
-                diaSemana = "Quarta"
-            )
-        )
-
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.layoutManager = layoutManager
-
-        val adapter = AulasAdapterAluno(listaAulas, isAdmin = false)
-        recyclerView.adapter = adapter
+    private fun setupAulasRecyclerView() {
+        recyclerAulas.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        adapter = AulasAdapterAluno(emptyList())
+        recyclerAulas.adapter = adapter
     }
+
+    private fun carregarAulasDoFirebase() {
+        val db = Firebase.firestore
+        val ref = db.collection("aulas")
+
+        val diaAtual = getDiaSemanaAtual()
+
+        ref.whereEqualTo("diaSemana", diaAtual) // Filtra as aulas pelo dia da semana
+            .get()
+            .addOnSuccessListener { result ->
+                val listaAulas = mutableListOf<Aula>()
+                for (document in result) {
+                    val aula = document.toObject(Aula::class.java)
+                    listaAulas.add(aula)
+                }
+                adapter.atualizarAulas(listaAulas)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Erro ao carregar aulas: ${exception.message}", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    private fun getDiaSemanaAtual(): String {
+        val calendar = Calendar.getInstance()
+        return SimpleDateFormat("EEEE", java.util.Locale("pt", "BR")).format(calendar.time).replaceFirstChar { it.uppercase() }
+    }
+
 
     private fun navigateToMeusTreinos() {
         try {
-            val intent = Intent(this, MeusTreinosActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            startActivity(Intent(this, MeusTreinosActivity::class.java))
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         } catch (e: Exception) {
-            showErrorToast("Não foi possível abrir Meus Treinos", e)
+            showErrorToast("Erro ao abrir Meus Treinos", e)
         }
     }
 
     private fun navigateToTreinoIniciado() {
         try {
-            val intent = Intent(this, TreinoIniciadoActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            startActivity(Intent(this, TreinoIniciadoActivity::class.java))
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         } catch (e: Exception) {
-            showErrorToast("Não foi possível iniciar o treino", e)
+            showErrorToast("Erro ao iniciar treino", e)
         }
     }
 
-    private fun navigteIa() {
+    private fun navigateIa() {
         try {
-            val intent = Intent(this, IAActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            startActivity(Intent(this, IAActivity::class.java))
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         } catch (e: Exception) {
-            showErrorToast("Não foi possível ir para a tela de IA", e)
+            showErrorToast("Erro ao abrir IA", e)
         }
     }
 
     private fun navigateCalendario() {
         try {
-            val intent = Intent(this, CalendarioActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
+            startActivity(Intent(this, CalendarioActivity::class.java))
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         } catch (e: Exception) {
-            showErrorToast("Não foi possível ir para a tela de Calendário", e)
+            showErrorToast("Erro ao abrir Calendário", e)
         }
     }
 
