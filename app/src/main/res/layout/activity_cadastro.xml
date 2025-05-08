@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+
+    <EditText
+        android:id="@+id/text_nome_completo"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:hint="Nome Completo"
+        android:textColor="#474747"
+        android:textColorHint="#474747"
+        android:textSize="15sp" />
+
+
+    <EditText
+        android:id="@+id/text_email"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textColor="#474747"
+        android:textColorHint="#474747"
+        android:textSize="15sp" />
+
+
+    <EditText
+        android:id="@+id/text_senha"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:hint="Senha"
+        android:inputType="textPassword"
+        android:textColor="#474747"
+        android:textColorHint="#474747"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/text_confirmar_senha"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:hint="Confirme a Senha"
+        android:inputType="textPassword"
+        android:textColor="#474747"
+        android:textColorHint="#474747"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/button_cadastrar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#007BFF"
+        android:text="Cadastrar"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

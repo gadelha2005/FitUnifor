@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_treino"
+    android:layout_width="350dp"
+    android:layout_height="350dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="20dp"
+    android:clickable="true"
+    app:cardBackgroundColor="#E9F7FF"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="350dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/image_treino"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#959595"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/text_titulo_treino"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="#6C757D"
+            android:textSize="20sp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="115dp"
+            android:layout_height="24dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#FFFAFA"
+            app:cardCornerRadius="50dp">
+
+            <TextView
+                android:id="@+id/text_numero_exercicios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#6C757D" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="115dp"
+            android:layout_height="24dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#FFFAFA"
+            app:cardCornerRadius="50dp">
+
+            <TextView
+                android:id="@+id/text_dia_semana"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#6C757D" />
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/button_iniciar_treino"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#007BFF"
+            android:text="Iniciar Treino"
+            android:textColor="#FBFBFB"
+            app:cornerRadius="30dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

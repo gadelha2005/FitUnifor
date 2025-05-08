@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_aluno"
+    android:layout_width="350dp"
+    android:layout_height="70dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="#E9F7FF"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/text_nome_aluno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nome: João Silva"
+                android:textColor="#6C757D"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/text_email_aluno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Email: joao@gmail.com"
+                android:textColor="#6C757D"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_arrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/icon_arrow"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

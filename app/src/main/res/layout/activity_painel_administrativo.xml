@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:backgroundTint="#FFFFFF"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:cardBackgroundColor="#007BFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#F6F6F6"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_nome_aluno"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="40dp"
+                android:layout_weight="1"
+                android:text="Olá, Nome"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/text_academia_unifor"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:text="Academia Unifor"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="340dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Painel Administrativo- Academia Unifor"
+        android:textColor="#007BFF"
+        android:textSize="20sp" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="#419AFF"
+        app:tabIndicatorColor="#101010"
+        app:tabMode="fixed"
+        app:tabTextColor="#F4F4F4">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_fichas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fichas" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_aulas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aulas" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp" />
+
+</LinearLayout>

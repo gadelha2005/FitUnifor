@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F8F8"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <ImageView
+        android:id="@+id/image_logo"
+        android:layout_width="300dp"
+        android:layout_height="180dp"
+        android:src="@drawable/logo_unifor" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="300dp"
+        android:layout_height="380dp"
+        android:layout_marginTop="40dp"
+        app:cardBackgroundColor="#E9F7FF"
+        app:cardCornerRadius="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="Digite sua nova senha."
+                android:textAlignment="center"
+                android:textColor="#0D0D0D"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/text_nova_senha"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="40dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Nova Senha"
+                android:inputType="textMultiLine"
+                android:textColor="#474747"
+                android:textColorHint="#474747"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/text_confirmar_nova_senha"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="30dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Confirme a Nova Senha"
+                android:inputType="textMultiLine"
+                android:textColor="#474747"
+                android:textColorHint="#474747"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/button_confirmar_nova_senha"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="30dp"
+                android:text="Confirmar" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

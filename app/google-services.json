@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "948131024274",
+    "project_id": "fitunifor-a5630",
+    "storage_bucket": "fitunifor-a5630.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948131024274:android:0e57095ada0cd1f40ec54b",
+        "android_client_info": {
+          "package_name": "com.example.fitunifor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBObYV7vfzqMwL7H-OtVt75QnuhbM4NSro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
