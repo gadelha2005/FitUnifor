@@ -39,6 +39,7 @@ class AulaFragment : Fragment() {
 
     private fun carregarAulasDoDia() {
         val diaAtual = getDiaSemanaAtual()
+        Log.d("AulaFragment", "Buscando aulas para: $diaAtual")
 
         db.collection("aulas")
             .whereEqualTo("diaSemana", diaAtual)
@@ -48,9 +49,9 @@ class AulaFragment : Fragment() {
                 for (document in result) {
                     val aula = document.toObject(Aula::class.java).apply {
                         id = document.id
-                        // Garante que alunosMatriculados está sendo carregado corretamente
                         alunosMatriculados = document.getLong("alunosMatriculados")?.toInt() ?: 0
-                        Log.d("AulaFragment", "Carregando aula: $nome - Matriculados: $alunosMatriculados")
+                        alunosMatriculadosList = document.get("alunosMatriculadosList") as List<String> // Carrega a lista de matriculados
+                        Log.d("AulaFragment", "Aula carregada: $nome - Dia: $diaSemana - Vagas: $alunosMatriculados/$maxAlunos")
                     }
                     listaAulas.add(aula)
                 }
@@ -64,7 +65,9 @@ class AulaFragment : Fragment() {
 
     private fun getDiaSemanaAtual(): String {
         val calendar = Calendar.getInstance()
-        return SimpleDateFormat("EEEE", Locale("pt", "BR")).format(calendar.time)
+        val diaFormatado = SimpleDateFormat("EEEE", Locale("pt", "BR")).format(calendar.time)
             .replaceFirstChar { it.uppercase() }
+        Log.d("DiaSemana", "Dia formatado: $diaFormatado")
+        return diaFormatado
     }
 }

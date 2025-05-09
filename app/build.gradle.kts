@@ -60,6 +60,7 @@ dependencies {
 
     // Glide (para imagens)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.androidx.ui.text.android)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     // Testes

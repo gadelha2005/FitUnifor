@@ -11,10 +11,17 @@ data class Aula(
     val diaSemana: String,
     val horario: String,
     val maxAlunos: Int,
-    val imagem: String = "image_aula_coletiva", // Agora é uma String (nome/URL da imagem)
+    val imagem: String = "image_aula_coletiva",
     var alunosMatriculados: Int = 0,
-    var temVagas: Boolean = true
+    var alunosMatriculadosList: List<String> = listOf() // Lista para armazenar os alunos matriculados
 ) : Parcelable {
-    constructor() : this("", "", "", "", "", 0, "", 0)
+    constructor() : this("", "", "", "", "", 0, "", 0, listOf())
 
+    fun temVagasDisponiveis(): Boolean {
+        return alunosMatriculados < maxAlunos
+    }
+
+    fun usuarioJaMatriculado(usuarioId: String): Boolean {
+        return alunosMatriculadosList.contains(usuarioId)
+    }
 }

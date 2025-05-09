@@ -49,7 +49,7 @@ class PainelAdminstrativoActivity : AppCompatActivity() {
         // Configura o botão de logout
         val logoutIcon = findViewById<ImageView>(R.id.icon_log_out)
         logoutIcon.setOnClickListener {
-            mostrarDialogoLogout()
+            exibirDialogLogout()
         }
     }
 
@@ -73,22 +73,20 @@ class PainelAdminstrativoActivity : AppCompatActivity() {
         }.attach()
     }
 
-    private fun mostrarDialogoLogout() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_logout, null)
-
+    private fun exibirDialogLogout() {
         val builder = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setPositiveButton("Sim") { _, _ ->
-                FirebaseAuth.getInstance().signOut()
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
-            }
-            .setNegativeButton("Cancelar") { dialog, _ ->
-                dialog.dismiss()
-            }
-
+        builder.setTitle("Sair da conta")
+        builder.setMessage("Deseja realmente sair?")
+        builder.setPositiveButton("Sim") { _, _ ->
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
+        builder.setNegativeButton("Cancelar") { dialog, _ ->
+            dialog.dismiss()
+        }
         builder.create().show()
     }
 }

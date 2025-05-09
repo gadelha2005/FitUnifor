@@ -20,6 +20,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 class PrincipalActivity : AppCompatActivity() {
 
@@ -50,20 +51,19 @@ class PrincipalActivity : AppCompatActivity() {
     }
 
     private fun exibirDialogLogout() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Sair da conta")
-        builder.setMessage("Deseja realmente sair?")
-        builder.setPositiveButton("Sim") { _, _ ->
-            FirebaseAuth.getInstance().signOut()
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
-        }
-        builder.setNegativeButton("Cancelar") { dialog, _ ->
-            dialog.dismiss()
-        }
-        builder.create().show()
+        AlertDialog.Builder(this)
+            .setTitle("Sair da conta")
+            .setMessage("Deseja realmente sair?")
+            .setPositiveButton("Sim") { _, _ ->
+                FirebaseAuth.getInstance().signOut()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
     }
 
     private fun setupNomeAluno() {
@@ -98,28 +98,36 @@ class PrincipalActivity : AppCompatActivity() {
     }
 
     private fun carregarAulasDoFirebase() {
-        val ref = db.collection("aulas")
         val diaAtual = getDiaSemanaAtual()
+        Log.d("PrincipalActivity", "Carregando aulas para: $diaAtual")
 
-        ref.whereEqualTo("diaSemana", diaAtual)
+        db.collection("aulas")
+            .whereEqualTo("diaSemana", diaAtual)
             .get()
             .addOnSuccessListener { result ->
                 val listaAulas = mutableListOf<Aula>()
                 for (document in result) {
-                    val aula = document.toObject(Aula::class.java)
+                    val aula = document.toObject(Aula::class.java).apply {
+                        id = document.id
+                        alunosMatriculados = document.getLong("alunosMatriculados")?.toInt() ?: 0
+                        Log.d("PrincipalActivity", "Aula: $nome - Dia: $diaSemana - Vagas: $alunosMatriculados/$maxAlunos")
+                    }
                     listaAulas.add(aula)
                 }
                 adapter.atualizarAulas(listaAulas)
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Erro ao carregar aulas: ${exception.message}", Toast.LENGTH_LONG).show()
+                Log.e("PrincipalActivity", "Erro ao carregar aulas", exception)
             }
     }
 
     private fun getDiaSemanaAtual(): String {
         val calendar = Calendar.getInstance()
-        return SimpleDateFormat("EEEE", java.util.Locale("pt", "BR")).format(calendar.time)
+        val diaFormatado = SimpleDateFormat("EEEE", Locale("pt", "BR")).format(calendar.time)
             .replaceFirstChar { it.uppercase() }
+        Log.d("PrincipalActivity", "Dia atual: $diaFormatado")
+        return diaFormatado
     }
 
     private fun navigateToMeusTreinos() {
