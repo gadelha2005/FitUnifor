@@ -44,6 +44,14 @@
                     android:textColor="#FFFFFF"
                     android:textSize="16sp" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/icon_log_out"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="330dp"
+                android:layout_marginTop="40dp"
+                app:srcCompat="@drawable/icon_log_out" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView

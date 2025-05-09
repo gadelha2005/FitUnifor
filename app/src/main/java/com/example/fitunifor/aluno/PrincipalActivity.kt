@@ -5,12 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fitunifor.MainActivity
 import com.example.fitunifor.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -33,13 +36,34 @@ class PrincipalActivity : AppCompatActivity() {
         recyclerAulas = findViewById(R.id.recycler_aulas_diarias)
         setupAulasRecyclerView()
 
-        // Configuração de botões e cards
         findViewById<CardView>(R.id.card_meus_treinos).setOnClickListener { navigateToMeusTreinos() }
         findViewById<CardView>(R.id.card_calendario).setOnClickListener { navigateCalendario() }
         findViewById<CardView>(R.id.card_ia).setOnClickListener { navigateIa() }
         findViewById<Button>(R.id.button_iniciar_treino1).setOnClickListener { navigateToTreinoIniciado() }
 
         carregarAulasDoFirebase()
+
+        val logoutIcon = findViewById<ImageView>(R.id.icon_log_out)
+        logoutIcon.setOnClickListener {
+            exibirDialogLogout()
+        }
+    }
+
+    private fun exibirDialogLogout() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Sair da conta")
+        builder.setMessage("Deseja realmente sair?")
+        builder.setPositiveButton("Sim") { _, _ ->
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
+        builder.setNegativeButton("Cancelar") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.create().show()
     }
 
     private fun setupNomeAluno() {

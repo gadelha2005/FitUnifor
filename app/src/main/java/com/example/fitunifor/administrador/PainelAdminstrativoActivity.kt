@@ -1,11 +1,15 @@
 package com.example.fitunifor.administrador
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.example.fitunifor.MainActivity
 import com.example.fitunifor.R
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -22,11 +26,10 @@ class PainelAdminstrativoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_painel_administrativo)
 
-        // Tenta obter o nome da intent primeiro
+        // Pega o nome do usuário da intent
         var nomeUsuario = intent.getStringExtra("NOME_USUARIO")
 
         if (nomeUsuario.isNullOrEmpty()) {
-            // Se não veio pela intent, busca do Firestore
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             db.collection("usuarios").document(userId).get()
                 .addOnSuccessListener { document ->
@@ -42,10 +45,16 @@ class PainelAdminstrativoActivity : AppCompatActivity() {
         }
 
         setupViewPager()
+
+        // Configura o botão de logout
+        val logoutIcon = findViewById<ImageView>(R.id.icon_log_out)
+        logoutIcon.setOnClickListener {
+            mostrarDialogoLogout()
+        }
     }
 
     private fun atualizarNome(nome: String?) {
-        val nomeFormatado = nome?.replace("\"", "") ?: "Admin" // Remove aspas se existirem
+        val nomeFormatado = nome?.replace("\"", "") ?: "Admin"
         findViewById<TextView>(R.id.text_nome_aluno).text = "Olá, $nomeFormatado"
     }
 
@@ -56,11 +65,30 @@ class PainelAdminstrativoActivity : AppCompatActivity() {
         viewPager.adapter = AdminPagerAdapter(this)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = when(position) {
+            tab.text = when (position) {
                 0 -> "Fichas Treino"
                 1 -> "Aulas Coletivas"
                 else -> ""
             }
         }.attach()
+    }
+
+    private fun mostrarDialogoLogout() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_logout, null)
+
+        val builder = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setPositiveButton("Sim") { _, _ ->
+                FirebaseAuth.getInstance().signOut()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        builder.create().show()
     }
 }
