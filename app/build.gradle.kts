@@ -58,9 +58,11 @@ dependencies {
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
 
+
     // Glide (para imagens)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation(libs.androidx.ui.text.android)
+    implementation(libs.generativeai)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     // Testes

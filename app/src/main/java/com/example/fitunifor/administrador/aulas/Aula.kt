@@ -1,5 +1,4 @@
 import android.os.Parcelable
-import com.example.fitunifor.R
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
