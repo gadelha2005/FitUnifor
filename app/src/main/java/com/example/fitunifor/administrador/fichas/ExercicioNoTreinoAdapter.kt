@@ -29,101 +29,70 @@ class ExercicioNoTreinoAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExercicioNoTreinoViewHolder {
-        try {
-            val view = LayoutInflater.from(parent.context)
+        return ExercicioNoTreinoViewHolder(
+            LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_exercicio_novo_treino_aluno, parent, false)
-            return ExercicioNoTreinoViewHolder(view)
-        } catch (e: Exception) {
-            Log.e("Adapter", "Erro ao criar ViewHolder", e)
-            throw e
-        }
+        )
     }
 
     override fun onBindViewHolder(holder: ExercicioNoTreinoViewHolder, position: Int) {
-        try {
-            val exercicio = exercicios[position]
+        val exercicio = exercicios[position]
+        with(holder) {
+            textNome.text = exercicio.nome
+            textMusculo.text = exercicio.grupoMuscular
 
-            with(holder) {
-                textNome.text = exercicio.nome
-                textMusculo.text = exercicio.grupoMuscular
+            imageMusculo.setImageResource(
+                when (exercicio.grupoMuscular) {
+                    "Peito" -> R.drawable.icon_chest
+                    "Pernas" -> R.drawable.icon_legs
+                    "Costas" -> R.drawable.icon_back_body
+                    "Bíceps", "Tríceps" -> R.drawable.icon_warms
+                    else -> R.drawable.icon_body
+                }
+            )
 
-                imageMusculo.setImageResource(
-                    when (exercicio.grupoMuscular) {
-                        "Peito" -> R.drawable.icon_chest
-                        "Pernas" -> R.drawable.icon_legs
-                        "Costas" -> R.drawable.icon_back_body
-                        "Bíceps", "Tríceps" -> R.drawable.icon_warms
-                        else -> R.drawable.icon_body
-                    }
-                )
-
-                btnRemover.setOnClickListener { onRemoverExercicio(exercicio) }
-                btnAdicionarSerie.setOnClickListener { onAdicionarSerie(exercicio) }
-
-                configurarSeries(seriesContainer, exercicio)
-            }
-        } catch (e: Exception) {
-            Log.e("Adapter", "Erro no onBindViewHolder", e)
+            btnRemover.setOnClickListener { onRemoverExercicio(exercicio) }
+            btnAdicionarSerie.setOnClickListener { onAdicionarSerie(exercicio) }
+            configurarSeries(seriesContainer, exercicio)
         }
     }
 
     private fun configurarSeries(container: LinearLayout, exercicio: Exercicio) {
         container.removeAllViews()
-
         exercicio.series.forEachIndexed { index, serie ->
-            try {
-                val serieView = LayoutInflater.from(container.context)
-                    .inflate(R.layout.item_serie, container, false)
+            val serieView = LayoutInflater.from(container.context)
+                .inflate(R.layout.item_serie, container, false)
 
-                val textSerieNumero = serieView.findViewById<TextView>(R.id.textSerieNumero)
-                val editPeso = serieView.findViewById<EditText>(R.id.text_edit_peso)
-                val editReps = serieView.findViewById<EditText>(R.id.text_edit_reps)
-                val iconApagarSerie = serieView.findViewById<ImageView>(R.id.icon_apagar_serie)
+            val textSerieNumero = serieView.findViewById<TextView>(R.id.textSerieNumero)
+            val editPeso = serieView.findViewById<EditText>(R.id.text_edit_peso)
+            val editReps = serieView.findViewById<EditText>(R.id.text_edit_reps)
+            val iconApagarSerie = serieView.findViewById<ImageView>(R.id.icon_apagar_serie)
 
-                textSerieNumero.text = "${index + 1}ª série"
+            textSerieNumero.text = "${index + 1}ª série"
+            editPeso.setText(if (serie.peso != 0.0) serie.peso.toString() else "")
+            editReps.setText(if (serie.repeticoes != 0) serie.repeticoes.toString() else "")
 
-                if (serie.peso != 0.0) {
-                    editPeso.setText(serie.peso.toString())
-                } else {
-                    editPeso.setText("")
+            editPeso.setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    serie.peso = editPeso.text.toString().toDoubleOrNull() ?: 0.0
                 }
-
-                if (serie.repeticoes != 0) {
-                    editReps.setText(serie.repeticoes.toString())
-                } else {
-                    editReps.setText("")
-                }
-
-                editPeso.setOnFocusChangeListener { _, hasFocus ->
-                    if (!hasFocus) {
-                        serie.peso = editPeso.text.toString().toDoubleOrNull() ?: 0.0
-                    }
-                }
-
-                editReps.setOnFocusChangeListener { _, hasFocus ->
-                    if (!hasFocus) {
-                        serie.repeticoes = editReps.text.toString().toIntOrNull() ?: 0
-                    }
-                }
-
-                // 👉 Mostrar botão apagar só se não for a primeira série
-                if (index == 0) {
-                    iconApagarSerie.visibility = View.GONE
-                } else {
-                    iconApagarSerie.visibility = View.VISIBLE
-                    iconApagarSerie.setOnClickListener {
-                        exercicio.series.removeAt(index)
-                        notifyDataSetChanged() // Redesenha tudo, simples e funcional
-                    }
-                }
-
-                container.addView(serieView)
-            } catch (e: Exception) {
-                Log.e("Adapter", "Erro ao configurar série", e)
             }
+
+            editReps.setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    serie.repeticoes = editReps.text.toString().toIntOrNull() ?: 0
+                }
+            }
+
+            iconApagarSerie.visibility = if (index == 0) View.GONE else View.VISIBLE
+            iconApagarSerie.setOnClickListener {
+                exercicio.series.removeAt(index)
+                notifyDataSetChanged()
+            }
+
+            container.addView(serieView)
         }
     }
-
 
     override fun getItemCount(): Int = exercicios.size
 }

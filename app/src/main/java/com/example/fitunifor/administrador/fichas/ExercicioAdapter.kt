@@ -13,7 +13,7 @@ class ExercicioAdapter(
     private val onExercicioSelecionado: (Exercicio, Boolean) -> Unit
 ) : RecyclerView.Adapter<ExercicioAdapter.ExercicioViewHolder>() {
 
-    private val selecionados = mutableMapOf<Int, Boolean>()
+    private val selecionados = mutableMapOf<String, Boolean>()
     private var listaCompleta = exercicios
 
     inner class ExercicioViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -32,14 +32,13 @@ class ExercicioAdapter(
 
     override fun onBindViewHolder(holder: ExercicioViewHolder, position: Int) {
         val exercicio = exercicios[position]
-
         with(holder) {
             textNome.text = exercicio.nome
             textMusculo.text = exercicio.grupoMuscular
 
             imageView.setImageResource(
                 when (exercicio.grupoMuscular) {
-                    "Peito" -> R.drawable.icon_chest
+                    "Peito" , "Ombro" -> R.drawable.icon_chest
                     "Pernas" -> R.drawable.icon_legs
                     "Costas" -> R.drawable.icon_back_body
                     "Bíceps", "Tríceps" -> R.drawable.icon_warms
@@ -61,6 +60,7 @@ class ExercicioAdapter(
 
     fun atualizarLista(novaLista: List<Exercicio>) {
         exercicios = novaLista
+        listaCompleta = novaLista
         notifyDataSetChanged()
     }
 
