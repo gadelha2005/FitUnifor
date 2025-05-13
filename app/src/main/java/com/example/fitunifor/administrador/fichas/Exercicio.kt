@@ -2,18 +2,23 @@ package com.example.fitunifor.administrador.fichas
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.Keep
 
+@Keep
 data class Exercicio(
-    var id: String = "",  // Mudado para String (Firebase usa IDs como string)
-    val nome: String = "",
-    val grupoMuscular: String = "",
-    val imagemUrl: String? = null,
-    val videoUrl: String? = null,
-    var series: MutableList<Serie> = mutableListOf(Serie(1, 0.0, 0))
+    var id: String = "",
+    var nome: String = "",
+    var grupoMuscular: String = "",
+    var imagemUrl: String? = null,
+    var videoUrl: String? = null,
+    var series: MutableList<Serie> = mutableListOf()
 ) : Parcelable {
 
+    // Construtor sem argumentos necessário para Firebase
+    constructor() : this("", "", "", null, null, mutableListOf())
+
     constructor(parcel: Parcel) : this(
-        id = parcel.readString() ?: "",  // Alterado para readString
+        id = parcel.readString() ?: "",
         nome = parcel.readString() ?: "",
         grupoMuscular = parcel.readString() ?: "",
         imagemUrl = parcel.readString(),
@@ -24,7 +29,7 @@ data class Exercicio(
     )
 
     constructor(nome: String, grupoMuscular: String) : this(
-        id = "",  // Alterado para string vazia
+        id = "",
         nome = nome,
         grupoMuscular = grupoMuscular,
         imagemUrl = null,
@@ -33,7 +38,7 @@ data class Exercicio(
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)  // Alterado para writeString
+        parcel.writeString(id)
         parcel.writeString(nome)
         parcel.writeString(grupoMuscular)
         parcel.writeString(imagemUrl)

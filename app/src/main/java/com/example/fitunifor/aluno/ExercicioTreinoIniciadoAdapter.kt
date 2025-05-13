@@ -26,9 +26,20 @@ class ExercicioTreinoIniciadoAdapter(
 
         fun bind(exercicio: Exercicio, position: Int) {
             nomeExercicio.text = exercicio.nome
-            serie1.text = "• 1. 8 repetições • 30kg"
-            serie2.text = "• 2. 8 repetições • 30kg"
-            serie3.text = "• 3. 8 repetições • 30kg"
+
+            // Mostrando as séries reais do exercício
+            exercicio.series.forEachIndexed { index, serie ->
+                when (index) {
+                    0 -> serie1.text = "• ${index + 1}. ${serie.repeticoes} repetições • ${serie.peso}kg"
+                    1 -> serie2.text = "• ${index + 1}. ${serie.repeticoes} repetições • ${serie.peso}kg"
+                    2 -> serie3.text = "• ${index + 1}. ${serie.repeticoes} repetições • ${serie.peso}kg"
+                }
+            }
+
+            // Escondendo TextViews de séries não utilizadas
+            serie1.visibility = if (exercicio.series.size >= 1) View.VISIBLE else View.GONE
+            serie2.visibility = if (exercicio.series.size >= 2) View.VISIBLE else View.GONE
+            serie3.visibility = if (exercicio.series.size >= 3) View.VISIBLE else View.GONE
 
             checkBox.setOnCheckedChangeListener { _, isChecked ->
                 onCheckChange(isChecked)

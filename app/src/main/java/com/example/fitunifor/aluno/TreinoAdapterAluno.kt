@@ -25,10 +25,9 @@ class TreinoAdapterAluno(
 
         fun bind(treino: Treino) {
             tituloTreino.text = treino.titulo
-            numeroExercicios.text = "${treino.getQuantidadeExercicios()} exercícios"
+            numeroExercicios.text = "${treino.exercicios?.size ?: 0} exercícios"
             diaSemana.text = treino.diaDaSemana
 
-            // Configura os listeners
             cardView.setOnClickListener { onItemClick(treino) }
             buttonIniciar.setOnClickListener { onButtonClick(treino) }
         }

@@ -21,7 +21,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,21 +32,25 @@
         <activity
             android:name="com.example.fitunifor.LoginActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".CadastroActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"/>
 
         <activity
             android:name=".EsqueciSenhaActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.example.fitunifor.LoginActivity"/>
 
         <activity
             android:name=".RedefinirSenhaActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -60,11 +65,13 @@
         <activity
             android:name=".aluno.PrincipalActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.example.fitunifor.LoginActivity"/>
 
         <activity
             android:name=".aluno.MeusTreinosActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".aluno.PrincipalActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -74,39 +81,51 @@
         <activity
             android:name=".aluno.TreinoActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".aluno.MeusTreinosActivity"/>
 
-        <activity android:name=".aluno.TreinoIniciadoActivity"/>
+        <activity
+            android:name=".aluno.TreinoIniciadoActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".aluno.TreinoFinalizadoActivity"
-            android:exported="false"/>
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".aluno.IAActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".aluno.PrincipalActivity"/>
 
         <activity
             android:name=".aluno.CalendarioActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".aluno.PrincipalActivity"/>
 
-        <activity android:name=".administrador.PainelAdminstrativoActivity"
+        <activity
+            android:name=".administrador.PainelAdminstrativoActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"/>
 
         <activity
             android:name=".administrador.fichas.GestaoTreinosActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".administrador.fichas.GestaoTreinosActivity"/>
 
         <activity
             android:name=".administrador.fichas.NovoTreinoAlunoActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".administrador.fichas.GestaoTreinosActivity"/>
 
         <activity
             android:name=".administrador.fichas.AdicionarExercicioActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".administrador.fichas.NovoTreinoAlunoActivity"/>
+
     </application>
 
 </manifest>

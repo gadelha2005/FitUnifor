@@ -2,29 +2,34 @@ package com.example.fitunifor.administrador.fichas
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.Keep
 
+@Keep
 data class Treino(
-    val id: String = "",  // Alterado para String
-    val alunoId: String,
-    val titulo: String,
-    val diaDaSemana: String,
-    val corFundo: String = "#E9F7FF",
-    val exercicios: List<Exercicio>
+    var id: String = "",
+    var alunoId: String = "",
+    var titulo: String = "",
+    var diaDaSemana: String = "",
+    var corFundo: String = "#E9F7FF",
+    var exercicios: List<Exercicio> = emptyList()
 ) : Parcelable {
 
+    // Construtor sem argumentos necessário para o Firebase
+    constructor() : this("", "", "", "", "#E9F7FF", emptyList())
+
     constructor(parcel: Parcel) : this(
-        id = parcel.readString() ?: "",  // Alterado para readString
+        id = parcel.readString() ?: "",
         alunoId = parcel.readString() ?: "",
         titulo = parcel.readString() ?: "",
         diaDaSemana = parcel.readString() ?: "",
         corFundo = parcel.readString() ?: "#E9F7FF",
-        exercicios = parcel.createTypedArrayList(Exercicio) ?: emptyList()
+        exercicios = parcel.createTypedArrayList(Exercicio.CREATOR) ?: emptyList()
     )
 
     fun getQuantidadeExercicios(): Int = exercicios.size
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)  // Alterado para writeString
+        parcel.writeString(id)
         parcel.writeString(alunoId)
         parcel.writeString(titulo)
         parcel.writeString(diaDaSemana)

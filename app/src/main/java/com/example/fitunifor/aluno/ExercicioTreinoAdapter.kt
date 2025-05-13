@@ -27,9 +27,12 @@ class ExercicioTreinoAdapter(
         fun bind(exercicio: Exercicio, position: Int) {
             numeroExercicio.text = (position + 1).toString()
             nomeExercicio.text = exercicio.nome
-            series.text = "Séries: 4" // Você pode adicionar esses dados ao modelo Exercicio se necessário
-            repeticoes.text = "Repetições: 8"
-            carga.text = "Carga: 30 kg"
+
+            // Usando os dados reais do exercício
+            val primeiraSerie = exercicio.series.firstOrNull()
+            series.text = "Séries: ${exercicio.series.size}"
+            repeticoes.text = "Repetições: ${primeiraSerie?.repeticoes ?: 0}"
+            carga.text = "Carga: ${primeiraSerie?.peso ?: 0} kg"
         }
     }
 
