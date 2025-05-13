@@ -44,7 +44,9 @@ class FiltroMusculoDialogFragment : DialogFragment() {
         val todosMusculos = listOf(
             Musculo("Costas", R.drawable.icon_back_body),
             Musculo("Bíceps", R.drawable.icon_warms),
-            Musculo("Peito", R.drawable.icon_chest)
+            Musculo("Peito", R.drawable.icon_chest),
+            Musculo("Ombro" , R.drawable.icon_chest),
+            Musculo("Perna", R.drawable.icon_legs)
         )
 
         val adapter = MusculoAdapter(todosMusculos) { musculo, isChecked ->

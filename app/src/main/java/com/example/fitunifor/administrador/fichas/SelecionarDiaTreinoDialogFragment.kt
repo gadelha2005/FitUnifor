@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.fitunifor.R
 
@@ -20,6 +19,7 @@ class SelecionarDiaTreinoDialogFragment : DialogFragment() {
 
     private var listener: OnDiaSelecionadoListener? = null
 
+    // Correção: Usar o tipo correto da interface
     fun setOnDiaSelecionadoListener(listener: OnDiaSelecionadoListener) {
         this.listener = listener
     }
@@ -80,12 +80,12 @@ class SelecionarDiaTreinoDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.setCanceledOnTouchOutside(false) // Impede fechar ao clicar fora
+        dialog.setCanceledOnTouchOutside(false)
         return dialog
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog?.setCancelable(false) // Impede fechar com botão voltar
+        dialog?.setCancelable(false)
     }
 }

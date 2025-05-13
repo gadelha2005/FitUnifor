@@ -28,7 +28,7 @@ class MeusTreinosFragment : Fragment() {
         // Exemplo de lista de treinos - você deve substituir por seus dados reais
         val listaTreinos = listOf(
             Treino(
-                id = 1,
+                id = 1.toString(),
                 alunoId = "1",
                 titulo = "Treino A: Peito + Ombro + Tríceps",
                 diaDaSemana = "Segunda",
@@ -42,7 +42,7 @@ class MeusTreinosFragment : Fragment() {
                 )
             ),
             Treino(
-                id = 2,
+                id = 2.toString(),
                 alunoId = "1",
                 titulo = "Treino B: Costas + Bíceps",
                 diaDaSemana = "Terça",
@@ -55,7 +55,7 @@ class MeusTreinosFragment : Fragment() {
                 )
             ),
             Treino(
-                id = 3,
+                id = 3.toString(),
                 alunoId = "1",
                 titulo = "Treino C: Perna",
                 diaDaSemana = "Quinta",

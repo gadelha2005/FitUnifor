@@ -1,19 +1,21 @@
 package com.example.fitunifor.administrador.fichas
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitunifor.R
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class NovoTreinoAlunoActivity : AppCompatActivity() {
 
@@ -22,6 +24,7 @@ class NovoTreinoAlunoActivity : AppCompatActivity() {
     private val exerciciosAdicionados = mutableListOf<Exercicio>()
     private var treinoEditando: Treino? = null
     private lateinit var alunoId: String
+    private val db = FirebaseFirestore.getInstance()
 
     companion object {
         const val REQUEST_CODE_ADICIONAR_EXERCICIO = 1001
@@ -29,7 +32,6 @@ class NovoTreinoAlunoActivity : AppCompatActivity() {
         const val EXTRA_TREINO_ATUALIZADO = "treino_atualizado"
     }
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_novo_treino_aluno)
@@ -63,58 +65,58 @@ class NovoTreinoAlunoActivity : AppCompatActivity() {
         }
 
         findViewById<ImageView>(R.id.icon_back_gestao_treinos).setOnClickListener {
-            navigateBackToGestaoTreinos()
+            finish()
         }
 
         findViewById<Button>(R.id.button_adicionar_exercicios_treino).setOnClickListener {
-            navigateToAdicionarExercicio()
+            val intent = Intent(this, AdicionarExercicioActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE_ADICIONAR_EXERCICIO)
         }
     }
 
     private fun carregarTreinoExistente(treino: Treino) {
-        if (!::adapter.isInitialized) {
-            Log.e("NovoTreinoAluno", "Adapter não inicializado!")
-            return
-        }
         findViewById<EditText>(R.id.editTextText3).setText(treino.titulo)
         exerciciosAdicionados.clear()
         exerciciosAdicionados.addAll(treino.exercicios)
         adapter.notifyDataSetChanged()
     }
 
-    private fun navigateBackToGestaoTreinos() {
-        finish()
-    }
-
-    private fun navigateToAdicionarExercicio() {
-        try {
-            val intent = Intent(this, AdicionarExercicioActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_ADICIONAR_EXERCICIO)
-        } catch (e: Exception) {
-            Toast.makeText(this, "Erro: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
-            Log.e("NovoTreinoAluno", "Erro ao navegar", e)
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == REQUEST_CODE_ADICIONAR_EXERCICIO && resultCode == Activity.RESULT_OK) {
-            try {
-                val novosExercicios = data?.getParcelableArrayListExtra<Exercicio>("exercicios_selecionados")
-                novosExercicios?.let {
-                    it.forEach { novoExercicio ->
-                        if (!exerciciosAdicionados.any { existente -> existente.id == novoExercicio.id }) {
-                            exerciciosAdicionados.add(novoExercicio)
-                        }
+            data?.getParcelableArrayListExtra<Exercicio>("exercicios_selecionados")?.let {
+                it.forEach { novoExercicio ->
+                    if (!exerciciosAdicionados.any { e -> e.id == novoExercicio.id }) {
+                        exerciciosAdicionados.add(novoExercicio)
                     }
-                    adapter.notifyDataSetChanged()
                 }
-            } catch (e: Exception) {
-                Toast.makeText(this, "Erro ao carregar exercícios", Toast.LENGTH_SHORT).show()
-                Log.e("NovoTreino", "Erro no onActivityResult", e)
+                adapter.notifyDataSetChanged()
             }
         }
+    }
+
+    private fun validarTreino(): Boolean {
+        if (exerciciosAdicionados.isEmpty()) {
+            Toast.makeText(this, "Adicione pelo menos um exercício", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        for (exercicio in exerciciosAdicionados) {
+            if (exercicio.series.isEmpty()) {
+                Toast.makeText(this, "${exercicio.nome}: Adicione pelo menos uma série", Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            for (serie in exercicio.series) {
+                if (serie.peso <= 0 || serie.repeticoes <= 0) {
+                    Toast.makeText(this,
+                        "${exercicio.nome}: Série ${serie.numero} inválida (Peso: ${serie.peso}, Reps: ${serie.repeticoes})",
+                        Toast.LENGTH_LONG).show()
+                    return false
+                }
+            }
+        }
+        return true
     }
 
     private fun salvarTreino() {
@@ -125,43 +127,106 @@ class NovoTreinoAlunoActivity : AppCompatActivity() {
             return
         }
 
-        if (exerciciosAdicionados.isEmpty()) {
-            Toast.makeText(this, "Adicione pelo menos um exercício", Toast.LENGTH_SHORT).show()
-            return
-        }
+        if (!validarTreino()) return
 
         if (treinoEditando != null) {
-            val treinoAtualizado = treinoEditando!!.copy(
-                titulo = titulo,
-                exercicios = ArrayList(exerciciosAdicionados)
-            )
-
-            val resultIntent = Intent().apply {
-                putExtra(EXTRA_TREINO_ATUALIZADO, treinoAtualizado)
-            }
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
+            atualizarTreinoExistente(titulo)
         } else {
-            val dialogFragment = SelecionarDiaTreinoDialogFragment().apply {
-                setOnDiaSelecionadoListener(object : SelecionarDiaTreinoDialogFragment.OnDiaSelecionadoListener {
-                    override fun onDiaSelecionado(dia: String) {
-                        val treinoNovo = Treino(
-                            id = System.currentTimeMillis().toInt(),
-                            alunoId = alunoId,
-                            titulo = titulo,
-                            diaDaSemana = dia,
-                            exercicios = ArrayList(exerciciosAdicionados)
-                        )
-
-                        val resultIntent = Intent().apply {
-                            putExtra("treino_salvo", treinoNovo)
-                        }
-                        setResult(Activity.RESULT_OK, resultIntent)
-                        finish()
-                    }
-                })
-            }
-            dialogFragment.show(supportFragmentManager, "SelecionarDiaDialog")
+            mostrarDialogSelecaoDia(titulo)
         }
+    }
+
+    private fun atualizarTreinoExistente(titulo: String) {
+        val treinoAtualizado = treinoEditando!!.copy(
+            titulo = titulo,
+            exercicios = ArrayList(exerciciosAdicionados)
+        )
+
+        lifecycleScope.launch {
+            try {
+                db.collection("treinos").document(treinoAtualizado.id)
+                    .set(converterTreinoParaMap(treinoAtualizado))
+                    .await()
+
+                val resultIntent = Intent().apply {
+                    putExtra(EXTRA_TREINO_ATUALIZADO, treinoAtualizado)
+                }
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@NovoTreinoAlunoActivity,
+                    "Erro ao atualizar: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun mostrarDialogSelecaoDia(titulo: String) {
+        SelecionarDiaTreinoDialogFragment().apply {
+            // Correção: Usar a interface corretamente
+            setOnDiaSelecionadoListener(object : SelecionarDiaTreinoDialogFragment.OnDiaSelecionadoListener {
+                override fun onDiaSelecionado(dia: String) {
+                    val treinoNovo = Treino(
+                        id = db.collection("treinos").document().id,
+                        alunoId = alunoId,
+                        titulo = titulo,
+                        diaDaSemana = dia, // Removido .toString() pois já é String
+                        exercicios = ArrayList(exerciciosAdicionados)
+                    )
+
+                    salvarNovoTreino(treinoNovo)
+                }
+            })
+        }.show(supportFragmentManager, "SelecionarDiaDialog")
+    }
+
+    private fun salvarNovoTreino(treino: Treino) {
+        lifecycleScope.launch {
+            try {
+                db.collection("treinos").document(treino.id)
+                    .set(converterTreinoParaMap(treino))
+                    .await()
+
+                val resultIntent = Intent().apply {
+                    putExtra("treino_salvo", treino)
+                }
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@NovoTreinoAlunoActivity,
+                    "Erro ao salvar: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun converterTreinoParaMap(treino: Treino): Map<String, Any> {
+        return mapOf(
+            "id" to treino.id,
+            "alunoId" to treino.alunoId,
+            "titulo" to treino.titulo,
+            "diaDaSemana" to treino.diaDaSemana,
+            "corFundo" to treino.corFundo,
+            "exercicios" to treino.exercicios.map { exercicio ->
+                mapOf(
+                    "id" to exercicio.id,
+                    "nome" to exercicio.nome,
+                    "grupoMuscular" to exercicio.grupoMuscular,
+                    "imagemUrl" to exercicio.imagemUrl,
+                    "videoUrl" to exercicio.videoUrl,
+                    "series" to exercicio.series.map { serie ->
+                        mapOf(
+                            "numero" to serie.numero,
+                            "peso" to serie.peso,
+                            "repeticoes" to serie.repeticoes
+                        )
+                    }
+                )
+            }
+        )
     }
 }

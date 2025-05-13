@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class Treino(
-    val id: Int,
+    val id: String = "",  // Alterado para String
     val alunoId: String,
     val titulo: String,
     val diaDaSemana: String,
@@ -13,7 +13,7 @@ data class Treino(
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
-        id = parcel.readInt(),
+        id = parcel.readString() ?: "",  // Alterado para readString
         alunoId = parcel.readString() ?: "",
         titulo = parcel.readString() ?: "",
         diaDaSemana = parcel.readString() ?: "",
@@ -24,7 +24,7 @@ data class Treino(
     fun getQuantidadeExercicios(): Int = exercicios.size
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
+        parcel.writeString(id)  // Alterado para writeString
         parcel.writeString(alunoId)
         parcel.writeString(titulo)
         parcel.writeString(diaDaSemana)
