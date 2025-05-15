@@ -6,7 +6,7 @@
     android:layout_width="360dp"
     android:layout_height="170dp"
     android:layout_marginTop="20dp"
-    android:layout_gravity="center"
+    android:layout_gravity="bottom"
     app:cardBackgroundColor="#E9F7FF"
     app:cardCornerRadius="10dp">
 

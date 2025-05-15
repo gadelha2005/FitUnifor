@@ -12,7 +12,7 @@ import com.example.fitunifor.administrador.fichas.Exercicio
 
 class ExercicioTreinoIniciadoAdapter(
     private val exercicios: List<Exercicio>,
-    private val onCheckChange: (Boolean) -> Unit,
+    private val onCheckChange: (Int, Boolean) -> Unit,
     private val onPlayClick: (Int) -> Unit
 ) : RecyclerView.Adapter<ExercicioTreinoIniciadoAdapter.ExercicioViewHolder>() {
 
@@ -27,22 +27,23 @@ class ExercicioTreinoIniciadoAdapter(
         fun bind(exercicio: Exercicio, position: Int) {
             nomeExercicio.text = exercicio.nome
 
-            // Mostrando as séries reais do exercício
+            // Atualiza as séries
             exercicio.series.forEachIndexed { index, serie ->
                 when (index) {
-                    0 -> serie1.text = "• ${index + 1}. ${serie.repeticoes} repetições • ${serie.peso}kg"
-                    1 -> serie2.text = "• ${index + 1}. ${serie.repeticoes} repetições • ${serie.peso}kg"
-                    2 -> serie3.text = "• ${index + 1}. ${serie.repeticoes} repetições • ${serie.peso}kg"
+                    0 -> serie1.text = "• ${serie.repeticoes} repetições • ${serie.peso}kg"
+                    1 -> serie2.text = "• ${serie.repeticoes} repetições • ${serie.peso}kg"
+                    2 -> serie3.text = "• ${serie.repeticoes} repetições • ${serie.peso}kg"
                 }
             }
 
-            // Escondendo TextViews de séries não utilizadas
+            // Visibilidade das séries
             serie1.visibility = if (exercicio.series.size >= 1) View.VISIBLE else View.GONE
             serie2.visibility = if (exercicio.series.size >= 2) View.VISIBLE else View.GONE
             serie3.visibility = if (exercicio.series.size >= 3) View.VISIBLE else View.GONE
 
+            // Checkbox listener
             checkBox.setOnCheckedChangeListener { _, isChecked ->
-                onCheckChange(isChecked)
+                onCheckChange(position, isChecked)
             }
 
             playButton.setOnClickListener {

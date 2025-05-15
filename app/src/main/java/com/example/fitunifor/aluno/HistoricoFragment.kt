@@ -1,17 +1,28 @@
 package com.example.fitunifor.aluno
 
-import android.content.Intent
+
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitunifor.R
 import com.example.fitunifor.model.TreinoFinalizado
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.toObject
 
 class HistoricoFragment : Fragment() {
+
+    private lateinit var recyclerView: RecyclerView
+    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private lateinit var adapter: TreinoHistoricoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,106 +34,58 @@ class HistoricoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("HistoricoFragment", "Fragment criado")
 
-        // Dados de exemplo completos com exercícios e séries
-        val listaTreinosFinalizados = listOf(
-            criarTreinoPeitoOmbroTriceps(),
-            criarTreinoCostasBiceps()
-            // Adicione mais treinos conforme necessário
-        )
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_historico)
+        recyclerView = view.findViewById(R.id.recycler_historico)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val adapter = TreinoHistoricoAdapter(listaTreinosFinalizados) { treino ->
+        // Inicializa o adapter vazio
+        adapter = TreinoHistoricoAdapter(emptyList()) { treino ->
             navegarParaTreinoFinalizado(treino)
         }
-
         recyclerView.adapter = adapter
+
+        carregarTreinosDoFirebase()
     }
 
-    private fun criarTreinoPeitoOmbroTriceps(): TreinoFinalizado {
-        return TreinoFinalizado(
-            id = 1,
-            titulo = "Treino A: Peito + Ombro + Tríceps",
-            data = "24/02/2024",
-            exerciciosCompletos = 3,
-            totalExercicios = 3,
-            exercicios = listOf(
-                ExercicioFinalizado(
-                    nome = "Supino Inclinado com Halteres",
-                    concluido = true,
-                    series = listOf(
-                        SerieFinalizada(1, 8, 30.0),
-                        SerieFinalizada(2, 8, 30.0),
-                        SerieFinalizada(3, 6, 30.0)
-                    )
-                ),
-                ExercicioFinalizado(
-                    nome = "Elevação Lateral",
-                    concluido = true,
-                    series = listOf(
-                        SerieFinalizada(1, 8, 10.0),
-                        SerieFinalizada(2, 8, 10.0),
-                        SerieFinalizada(3, 8, 10.0)
-                    )
-                ),
-                ExercicioFinalizado(
-                    nome = "Tríceps Corda",
-                    concluido = true,
-                    series = listOf(
-                        SerieFinalizada(1, 8, 25.0),
-                        SerieFinalizada(2, 8, 25.0),
-                        SerieFinalizada(3, 8, 25.0)
-                    )
-                )
-            )
-        )
-    }
+    private fun carregarTreinosDoFirebase() {
+        val userId = auth.currentUser?.uid ?: run {
+            Toast.makeText(requireContext(), "Usuário não autenticado", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-    private fun criarTreinoCostasBiceps(): TreinoFinalizado {
-        return TreinoFinalizado(
-            id = 2,
-            titulo = "Treino B: Costas + Bíceps",
-            data = "26/02/2024",
-            exerciciosCompletos = 3,
-            totalExercicios = 5,
-            exercicios = listOf(
-                ExercicioFinalizado(
-                    nome = "Barra Fixa",
-                    concluido = true,
-                    series = listOf(
-                        SerieFinalizada(1, 8, 0.0), // Peso corporal
-                        SerieFinalizada(2, 6, 0.0),
-                        SerieFinalizada(3, 5, 0.0)
-                    )
-                ),
-                ExercicioFinalizado(
-                    nome = "Remada Curvada",
-                    concluido = true,
-                    series = listOf(
-                        SerieFinalizada(1, 8, 40.0),
-                        SerieFinalizada(2, 8, 40.0),
-                        SerieFinalizada(3, 6, 40.0)
-                    )
-                ),
-                ExercicioFinalizado(
-                    nome = "Rosca Direta",
-                    concluido = false,
-                    series = listOf(
-                        SerieFinalizada(1, 8, 12.0),
-                        SerieFinalizada(2, 8, 12.0),
-                        SerieFinalizada(3, 0, 0.0) // Não realizado
-                    )
-                )
-            )
-        )
+        Log.d("HistoricoFragment", "Carregando treinos para o usuário: $userId")
+
+        db.collection("treinosFinalizados")
+            .whereEqualTo("userId", userId)
+            .orderBy("data", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    Log.d("HistoricoFragment", "Nenhum treino encontrado")
+                    Toast.makeText(requireContext(), "Nenhum treino no histórico", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
+
+                val treinos = documents.map { doc ->
+                    doc.toObject<TreinoFinalizado>().copy(id = doc.id)
+                }
+
+                Log.d("HistoricoFragment", "${treinos.size} treinos carregados")
+                adapter.updateList(treinos) // Método renomeado para updateList
+            }
+            .addOnFailureListener { exception ->
+                Log.e("HistoricoFragment", "Erro ao carregar treinos", exception)
+                Toast.makeText(
+                    requireContext(),
+                    "Erro ao carregar histórico: ${exception.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
     }
 
     private fun navegarParaTreinoFinalizado(treino: TreinoFinalizado) {
-        val intent = Intent(requireContext(), TreinoFinalizadoActivity::class.java).apply {
-            putExtra("TREINO_FINALIZADO", treino)
-        }
+        val intent = TreinoFinalizadoActivity.newIntent(requireContext(), treino)
         startActivity(intent)
     }
 }

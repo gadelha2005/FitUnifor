@@ -9,16 +9,19 @@ import android.os.CountDownTimer
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.util.Log
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitunifor.R
 import com.example.fitunifor.administrador.fichas.Exercicio
 import com.example.fitunifor.administrador.fichas.Treino
+import com.example.fitunifor.model.TreinoFinalizado
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TreinoIniciadoActivity : AppCompatActivity() {
 
@@ -39,6 +42,8 @@ class TreinoIniciadoActivity : AppCompatActivity() {
     private var initialTimeInMillis: Long = 60000
     private var exerciciosConcluidos = 0
     private var totalExercicios = 0
+    private lateinit var treinoAtual: Treino
+    private val exerciciosMarcados = mutableSetOf<Int>()
 
     @SuppressLint("MissingInflatedId", "ServiceCast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,14 +52,14 @@ class TreinoIniciadoActivity : AppCompatActivity() {
 
         // Inicializa o vibrator
         vibrator = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-            vibratorManager.defaultVibrator
+            val manager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            manager.defaultVibrator
         } else {
             @Suppress("DEPRECATION")
             getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         }
 
-        // Inicializa os componentes da interface
+        // Inicializa componentes da interface
         iconVoltarTelaInicial = findViewById(R.id.icon_back_historico_treinos)
         timerText = findViewById(R.id.timer_text)
         startButton = findViewById(R.id.icon_start_timer)
@@ -65,38 +70,43 @@ class TreinoIniciadoActivity : AppCompatActivity() {
         textNomeTreino = findViewById(R.id.text_nome_treino)
         buttonFinalizar = findViewById(R.id.button4)
 
-        // Configura o treino
-        val treino = intent.getParcelableExtra<Treino>("TREINO")
-        treino?.let {
-            textNomeTreino.text = it.titulo
-            totalExercicios = it.exercicios.size
-            setupRecyclerView(it.exercicios)
-        }
+        // Recebe o treino passado pela intent
+        treinoAtual = intent.getParcelableExtra<Treino>("TREINO")!!
+        textNomeTreino.text = treinoAtual.titulo
+        totalExercicios = treinoAtual.exercicios.size
 
-        // Estado inicial
+        setupRecyclerView(treinoAtual.exercicios)
+
+        TreinoManager.iniciarTreino(treinoAtual)
+        TreinoManager.setExerciciosConcluidos(exerciciosConcluidos)
+        TreinoManager.setTimeLeft(timeLeftInMillis)
+
         updateTimerDisplay()
         updateExerciciosFeitosText()
         showStartButton()
 
-        // Configura listeners
         setupClickListeners()
     }
 
     private fun setupRecyclerView(exercicios: List<Exercicio>) {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_exercicios)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
         val adapter = ExercicioTreinoIniciadoAdapter(
             exercicios,
-            onCheckChange = { isChecked ->
-                exerciciosConcluidos += if (isChecked) 1 else -1
+            onCheckChange = { position, isChecked ->
+                if (isChecked) {
+                    exerciciosMarcados.add(position)
+                } else {
+                    exerciciosMarcados.remove(position)
+                }
+                exerciciosConcluidos = exerciciosMarcados.size
                 updateExerciciosFeitosText()
+                TreinoManager.setExerciciosConcluidos(exerciciosConcluidos)
             },
             onPlayClick = { position ->
                 showVideoDialog()
             }
         )
-
         recyclerView.adapter = adapter
     }
 
@@ -106,46 +116,62 @@ class TreinoIniciadoActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        iconVoltarTelaInicial.setOnClickListener { navigateTelaPrincipal() }
+        iconVoltarTelaInicial.setOnClickListener {
+            showConfirmationDialog()
+        }
 
-        // Botão de iniciar o timer
         startButton.setOnClickListener {
             startTimer()
             showPauseButton()
+            TreinoManager.setTimeLeft(timeLeftInMillis)
         }
 
-        // Botão de pausar o timer
         pauseButton.setOnClickListener {
             pauseTimer()
             showStartButton()
+            TreinoManager.setTimeLeft(timeLeftInMillis)
         }
 
-        // Botão de resetar o timer
         resetButton.setOnClickListener {
             resetTimer()
             showStartButton()
+            TreinoManager.setTimeLeft(timeLeftInMillis)
         }
 
         editTimerIcon.setOnClickListener {
             countDownTimer?.cancel()
             timerRunning = false
-
             val originalTimeInSeconds = (initialTimeInMillis / 1000).toInt()
             val dialog = TimerDialogFragment(originalTimeInSeconds) { selectedTimeInSeconds ->
                 initialTimeInMillis = selectedTimeInSeconds * 1000L
                 timeLeftInMillis = initialTimeInMillis
-
+                TreinoManager.setTimeLeft(timeLeftInMillis)
                 updateTimerDisplay()
                 showStartButton()
-                Toast.makeText(this, "Tempo atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Tempo atualizado!", Toast.LENGTH_SHORT).show()
             }
             dialog.show(supportFragmentManager, "TimerDialog")
         }
 
         buttonFinalizar.setOnClickListener {
+            salvarTreinoFinalizadoNoFirebase()
+            TreinoManager.finalizarTreino()
             finish()
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
+    }
+
+    private fun showConfirmationDialog() {
+        val dialog = ConfirmacaoTreinoDialogFragment().apply {
+            setListener(object : ConfirmacaoTreinoDialogFragment.ConfirmacaoTreinoListener {
+                override fun onContinuarTreino() {}
+                override fun onCancelarTreino() {
+                    TreinoManager.finalizarTreino()
+                    finish()
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                }
+            })
+        }
+        dialog.show(supportFragmentManager, "ConfirmacaoTreinoDialog")
     }
 
     private fun updateExerciciosFeitosText() {
@@ -157,16 +183,15 @@ class TreinoIniciadoActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 timeLeftInMillis = millisUntilFinished
                 updateTimerDisplay()
+                TreinoManager.setTimeLeft(timeLeftInMillis)
             }
-
             override fun onFinish() {
                 timerRunning = false
-                showStartButton()
                 vibrate()
                 resetTimer()
+                showStartButton()
             }
         }.start()
-
         timerRunning = true
     }
 
@@ -189,6 +214,7 @@ class TreinoIniciadoActivity : AppCompatActivity() {
         timeLeftInMillis = initialTimeInMillis
         updateTimerDisplay()
         timerRunning = false
+        TreinoManager.setTimeLeft(timeLeftInMillis)
     }
 
     private fun updateTimerDisplay() {
@@ -207,26 +233,46 @@ class TreinoIniciadoActivity : AppCompatActivity() {
         pauseButton.visibility = ImageView.VISIBLE
     }
 
-    private fun navigateTelaPrincipal() {
-        try {
-            val intent = Intent(this, PrincipalActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        } catch (e: Exception) {
-            Toast.makeText(
-                this,
-                "Não foi possível abrir a Tela Principal\n${e.localizedMessage}",
-                Toast.LENGTH_LONG
-            ).show()
-            e.printStackTrace()
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         countDownTimer?.cancel()
         vibrator.cancel()
+    }
+
+    private fun salvarTreinoFinalizadoNoFirebase() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        val exerciciosFinalizados = treinoAtual.exercicios.mapIndexed { index, exercicio ->
+            ExercicioFinalizado(
+                nome = exercicio.nome,
+                concluido = exerciciosMarcados.contains(index),
+                series = exercicio.series.map { serie ->
+                    SerieFinalizada(
+                        numero = serie.numero,
+                        repeticoes = serie.repeticoes,
+                        carga = serie.peso.toDouble()
+                    )
+                }
+            )
+        }
+
+        val treinoFinalizado = TreinoFinalizado(
+            userId = userId,
+            titulo = treinoAtual.titulo,
+            data = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date()),
+            exerciciosCompletos = exerciciosConcluidos,
+            totalExercicios = totalExercicios,
+            exercicios = exerciciosFinalizados
+        )
+
+        FirebaseFirestore.getInstance().collection("treinosFinalizados")
+            .add(treinoFinalizado)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Treino salvo no histórico!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Erro ao salvar: ${e.message}", Toast.LENGTH_LONG).show()
+                Log.e("Firestore", "Erro ao salvar treino", e)
+            }
     }
 }

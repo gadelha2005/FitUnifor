@@ -1,47 +1,34 @@
 package com.example.fitunifor.model
 
-import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.example.fitunifor.aluno.ExercicioFinalizado
+import com.google.firebase.firestore.Exclude
+import kotlinx.parcelize.Parcelize
 
+@Keep
+@Parcelize
 data class TreinoFinalizado(
-    val id: Int,
-    val titulo: String,
-    val data: String,
-    val exerciciosCompletos: Int,
-    val totalExercicios: Int,
-    val exercicios: List<ExercicioFinalizado>,
-    val imagemUrl: String? = null
+    val id: String = "",
+    val userId: String = "",
+    val titulo: String = "",
+    val data: String = "",
+    val exerciciosCompletos: Int = 0,
+    val totalExercicios: Int = 0,
+    val exercicios: List<ExercicioFinalizado> = emptyList()
 ) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString() ?: "",
-        parcel.readString() ?: "",
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.createTypedArrayList(ExercicioFinalizado.CREATOR) ?: emptyList(),
-        parcel.readString()
-    )
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeString(titulo)
-        parcel.writeString(data)
-        parcel.writeInt(exerciciosCompletos)
-        parcel.writeInt(totalExercicios)
-        parcel.writeTypedList(exercicios)
-        parcel.writeString(imagemUrl)
+    @Exclude
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "userId" to userId,
+            "titulo" to titulo,
+            "data" to data,
+            "exerciciosCompletos" to exerciciosCompletos,
+            "totalExercicios" to totalExercicios,
+            "exercicios" to exercicios.map { it.toMap() }
+        )
     }
 
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<TreinoFinalizado> {
-        override fun createFromParcel(parcel: Parcel): TreinoFinalizado {
-            return TreinoFinalizado(parcel)
-        }
-
-        override fun newArray(size: Int): Array<TreinoFinalizado?> {
-            return arrayOfNulls(size)
-        }
-    }
+    // Construtor vazio necessário para o Firebase
+    constructor() : this("", "", "", "", 0, 0, emptyList())
 }

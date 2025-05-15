@@ -1,34 +1,24 @@
 package com.example.fitunifor.aluno
 
-import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.Keep
+import kotlinx.parcelize.Parcelize
 
+@Keep
+@Parcelize
 data class SerieFinalizada(
-    val numero: Int,
-    val repeticoes: Int,
-    val peso: Double
+    val numero: Int = 0,
+    val repeticoes: Int = 0,
+    val carga: Double = 0.0
 ) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readDouble()
-    )
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(numero)
-        parcel.writeInt(repeticoes)
-        parcel.writeDouble(peso)
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "numero" to numero,
+            "repeticoes" to repeticoes,
+            "carga" to carga
+        )
     }
 
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<SerieFinalizada> {
-        override fun createFromParcel(parcel: Parcel): SerieFinalizada {
-            return SerieFinalizada(parcel)
-        }
-
-        override fun newArray(size: Int): Array<SerieFinalizada?> {
-            return arrayOfNulls(size)
-        }
-    }
+    // Construtor vazio necessário para o Firebase
+    constructor() : this(0, 0, 0.0)
 }

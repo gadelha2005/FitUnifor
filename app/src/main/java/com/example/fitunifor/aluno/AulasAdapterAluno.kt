@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AulasAdapterAluno(
-    private var aulas: List<Aula>
+    private var aulas: List<Aula>  // Removido o parâmetro 'b'
 ) : RecyclerView.Adapter<AulasAdapterAluno.AulaAlunoViewHolder>() {
 
     private val db = FirebaseFirestore.getInstance()

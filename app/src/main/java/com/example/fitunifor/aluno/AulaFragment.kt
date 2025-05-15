@@ -29,7 +29,9 @@ class AulaFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.recycler_aulas_diarias)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = AulasAdapterAluno(listaAulas)
+        adapter = AulasAdapterAluno(
+            listaAulas  // Removido o 'b'
+        )
         recyclerView.adapter = adapter
 
         carregarAulasDoDia()

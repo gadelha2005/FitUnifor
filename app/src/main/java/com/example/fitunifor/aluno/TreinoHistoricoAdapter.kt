@@ -4,40 +4,46 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitunifor.R
 import com.example.fitunifor.model.TreinoFinalizado
 
-class TreinoHistoricoAdapter (
-    private val treinosFinalizados: List<TreinoFinalizado>,
+class TreinoHistoricoAdapter(
+    private var treinos: List<TreinoFinalizado>,
     private val onItemClick: (TreinoFinalizado) -> Unit
-) : RecyclerView.Adapter<TreinoHistoricoAdapter.HistoricoViewHolder>() {
+) : RecyclerView.Adapter<TreinoHistoricoAdapter.TreinoViewHolder>() {
 
-    inner class HistoricoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tituloTreino: TextView = itemView.findViewById(R.id.text_titulo_treino)
-        private val dataTreino: TextView = itemView.findViewById(R.id.text_data_treino)
-        private val desempenho: TextView = itemView.findViewById(R.id.text_desempenho)
-        private val cardView: CardView = itemView.findViewById(R.id.card_treino_finalizado)
-
-        fun bind(treino: TreinoFinalizado) {
-            tituloTreino.text = treino.titulo
-            dataTreino.text = treino.data
-            desempenho.text = "Desempenho: ${treino.exerciciosCompletos} de ${treino.totalExercicios} exercícios"
-
-            cardView.setOnClickListener { onItemClick(treino) }
-        }
+    // Método para atualizar a lista
+    fun updateList(newList: List<TreinoFinalizado>) {
+        treinos = newList
+        notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoricoViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TreinoViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_treino_historico_treinos, parent, false)
-        return HistoricoViewHolder(view)
+        return TreinoViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HistoricoViewHolder, position: Int) {
-        holder.bind(treinosFinalizados[position])
+    override fun onBindViewHolder(holder: TreinoViewHolder, position: Int) {
+        holder.bind(treinos[position])
     }
 
-    override fun getItemCount(): Int = treinosFinalizados.size
+    override fun getItemCount(): Int = treinos.size
+
+    inner class TreinoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val titulo: TextView = itemView.findViewById(R.id.text_titulo_treino)
+        private val data: TextView = itemView.findViewById(R.id.text_data_treino)
+        private val desempenho: TextView = itemView.findViewById(R.id.text_desempenho)
+
+        fun bind(treino: TreinoFinalizado) {
+            titulo.text = treino.titulo
+            data.text = treino.data
+            desempenho.text = "${treino.exerciciosCompletos}/${treino.totalExercicios} exercícios concluídos"
+
+            itemView.setOnClickListener {
+                onItemClick(treino)
+            }
+        }
+    }
 }
