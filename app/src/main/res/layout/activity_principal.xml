@@ -183,7 +183,6 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif-black"
-                        android:text="17"
                         android:textAlignment="center"
                         android:textAllCaps="false"
                         android:textColor="#020202"

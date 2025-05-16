@@ -1,7 +1,9 @@
 package com.example.fitunifor.aluno
 
 import Aula
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -17,6 +19,7 @@ import com.example.fitunifor.MainActivity
 import com.example.fitunifor.R
 import com.example.fitunifor.administrador.fichas.Treino
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
@@ -28,27 +31,99 @@ class PrincipalActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private lateinit var recyclerAulas: RecyclerView
     private lateinit var adapter: AulasAdapterAluno
+    private lateinit var textTreinosCompletos: TextView
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
 
+        sharedPref = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+
         setupNomeAluno()
-
-        recyclerAulas = findViewById(R.id.recycler_aulas_diarias)
+        setupViews()
         setupAulasRecyclerView()
+        setupClickListeners()
 
+        verificarEResetarInscricoes() // Nova função adicionada
+        carregarAulasDoFirebase()
+        carregarTreinosCompletos()
+    }
+
+    private fun verificarEResetarInscricoes() {
+        val ultimoReset = sharedPref.getLong("ultimo_reset", 0)
+        val hoje = Calendar.getInstance()
+
+        // Verifica se é segunda-feira e se já passou da hora de reset
+        if (hoje.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY &&
+            hoje.timeInMillis - ultimoReset > 24 * 60 * 60 * 1000) {
+
+            resetarInscricoesNoFirestore()
+
+            // Atualiza o último horário de reset
+            sharedPref.edit().putLong("ultimo_reset", hoje.timeInMillis).apply()
+        }
+    }
+
+    private fun resetarInscricoesNoFirestore() {
+        db.collection("aulas")
+            .get()
+            .addOnSuccessListener { documents ->
+                val batch = db.batch()
+
+                for (document in documents) {
+                    val aulaRef = db.collection("aulas").document(document.id)
+                    batch.update(aulaRef,
+                        "alunosMatriculados", 0,
+                        "listaAlunos", emptyList<String>()
+                    )
+                }
+
+                batch.commit()
+                    .addOnSuccessListener {
+                        Log.d("PrincipalActivity", "Inscrições resetadas com sucesso")
+                        // Recarrega as aulas após o reset
+                        carregarAulasDoFirebase()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("PrincipalActivity", "Erro ao resetar inscrições", e)
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.e("PrincipalActivity", "Erro ao buscar aulas para reset", e)
+            }
+    }
+
+    private fun setupViews() {
+        recyclerAulas = findViewById(R.id.recycler_aulas_diarias)
+        textTreinosCompletos = findViewById(R.id.text_treinos_completos)
+    }
+
+    private fun setupClickListeners() {
         findViewById<CardView>(R.id.card_meus_treinos).setOnClickListener { navigateToMeusTreinos() }
         findViewById<CardView>(R.id.card_calendario).setOnClickListener { navigateCalendario() }
         findViewById<CardView>(R.id.card_ia).setOnClickListener { navigateIa() }
         findViewById<Button>(R.id.button_iniciar_treino1).setOnClickListener { navigateToTreinoIniciado() }
 
-        carregarAulasDoFirebase()
-
         val logoutIcon = findViewById<ImageView>(R.id.icon_log_out)
-        logoutIcon.setOnClickListener {
-            exibirDialogLogout()
-        }
+        logoutIcon.setOnClickListener { exibirDialogLogout() }
+    }
+
+    private fun carregarTreinosCompletos() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        db.collection("treinosFinalizados")
+            .whereEqualTo("userId", userId)
+            .get()
+            .addOnSuccessListener { documents ->
+                val count = documents.size()
+                textTreinosCompletos.text = count.toString()
+                Log.d("PrincipalActivity", "Treinos completos: $count")
+            }
+            .addOnFailureListener { exception ->
+                Log.e("PrincipalActivity", "Erro ao carregar treinos completos", exception)
+                textTreinosCompletos.text = "0"
+            }
     }
 
     private fun exibirDialogLogout() {
