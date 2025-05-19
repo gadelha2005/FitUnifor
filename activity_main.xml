@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F8F8"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <!-- Logo (Fixo) -->
+
+    <!-- TabLayout (Fixo) -->
+    <ImageView
+        android:id="@+id/image_logo"
+        android:layout_width="300dp"
+        android:layout_height="178dp"
+        android:src="@drawable/logo_unifor" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#419AFF"
+        app:tabIndicatorColor="#101010"
+        app:tabMode="fixed"
+        app:tabTextColor="#F4F4F4">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_cadastro3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cadastro" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <!-- CardView (Recipiente Vazio - Conteúdo será injetado dinamicamente) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="40dp"
+        app:cardBackgroundColor="#E9F7FF"
+        app:cardCornerRadius="30dp" />
+</LinearLayout>
