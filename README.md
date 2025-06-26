@@ -20,6 +20,7 @@ Com uma interface intuitiva, o app facilita o dia a dia dos usuários com acesso
 - Acesso a quantidade de Treinos completos e diferentes níveis relacionados à quantidade de Treinos finalizados
 - Acesso ao histórico de Treinos
 - Acesso ao um bate-papo com IA
+- Pode participar de uma aula coletiva
 
 🧑‍🏫 Administrador (Personal)
 - Login com permissão administrativa.
