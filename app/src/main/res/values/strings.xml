@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">FitUnifor</string>
+    <string name="editar_aula">Editar Aula</string>
+    <string name="erro_nome_aula">Digite o nome da aula</string>
+    <string name="erro_professor">Digite o nome do professor</string>
+    <string name="erro_horario">Selecione um horário</string>
+    <string name="erro_capacidade">Capacidade inválida</string>
+
+    <plurals name="texto_exercicios_selecionados">
+        <item quantity="one">Adicionar 1 Exercício</item>
+        <item quantity="other">Adicionar %d Exercícios</item>
+    </plurals>
+
+</resources>

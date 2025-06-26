@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissões necessárias -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FitUnifor"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.example.fitunifor.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".CadastroActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+
+        <activity
+            android:name=".EsqueciSenhaActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.example.fitunifor.LoginActivity"/>
+
+        <activity
+            android:name=".RedefinirSenhaActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="fitunifor-a5630.firebaseapp.com"
+                    android:pathPrefix="/__/auth/action"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".aluno.PrincipalActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.example.fitunifor.LoginActivity"/>
+
+        <activity
+            android:name=".aluno.MeusTreinosActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".aluno.PrincipalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.fitunifor.aluno.PrincipalActivity" />
+        </activity>
+
+        <activity
+            android:name=".aluno.TreinoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".aluno.MeusTreinosActivity"/>
+
+        <activity
+            android:name=".aluno.TreinoIniciadoActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".aluno.TreinoFinalizadoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+
+        <activity
+            android:name=".aluno.IAActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".aluno.PrincipalActivity"/>
+
+        <activity
+            android:name=".aluno.CalendarioActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".aluno.PrincipalActivity"/>
+
+        <activity
+            android:name=".administrador.PainelAdminstrativoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+
+        <activity
+            android:name=".administrador.fichas.GestaoTreinosActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".administrador.fichas.GestaoTreinosActivity"/>
+
+        <activity
+            android:name=".administrador.fichas.NovoTreinoAlunoActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".administrador.fichas.GestaoTreinosActivity"/>
+
+        <activity
+            android:name=".administrador.fichas.AdicionarExercicioActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".administrador.fichas.NovoTreinoAlunoActivity"/>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,19 @@
+# Firebase
+google-services.json
+
+# Chaves de build e arquivos locais
+*.keystore
+*.jks
+local.properties
+
+# Pastas geradas
+/build
+/.gradle
+/captures
+.externalNativeBuild
+.recommenders
+
+# Arquivos do Android Studio
+*.iml
+.idea/
+.DS_Store
